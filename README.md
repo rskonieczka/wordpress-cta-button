@@ -132,16 +132,15 @@ The button is rendered with the following HTML structure:
 
 ## License
 
-**Non-Commercial Use Only**
+**Free to Use**
 
-This plugin is free for personal and non-commercial use only. If you want to use it on a commercial website, you need to purchase a commercial license.
+This plugin is free to use for all purposes. However, if you need an invoice or official documentation for your commercial use, please purchase a license.
 
-### Commercial License
+### Paid License with Invoice
 - One-time payment for a single domain
-- Only a few dollars per license
+- Includes official invoice for business documentation
 - No recurring fees
-- Purchase online: [Buy commercial license](https://buy.stripe.com/6oEcP3fJ90lN6oo9AK)
-
+- Purchase online: [Buy license with invoice](https://buy.stripe.com/6oEcP3fJ90lN6oo9AK)
 
 ## Credits
 
