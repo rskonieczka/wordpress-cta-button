@@ -1,0 +1,85 @@
+.sticky-phone-button {
+	position: fixed;
+	z-index: 9999999;
+	display: none;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+/* Pozycje dla przycisku */
+.sticky-bottom-right {
+	bottom: 20px;
+	right: 20px;
+}
+
+.sticky-bottom-left {
+	bottom: 20px;
+	left: 20px;
+}
+
+.sticky-bottom-center {
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.sticky-top-right {
+	top: 20px;
+	right: 20px;
+}
+
+.sticky-top-left {
+	top: 20px;
+	left: 20px;
+}
+
+.sticky-top-center {
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.sticky-middle-right {
+	top: 50%;
+	right: 20px;
+	transform: translateY(-50%);
+}
+
+.sticky-middle-left {
+	top: 50%;
+	left: 20px;
+	transform: translateY(-50%);
+}
+
+/* Widoczność tylko na telefonach */
+.sticky-phone-only {
+	display: none;
+}
+
+@media (max-width: 768px) {
+	.sticky-phone-button {
+		display: flex;
+	}
+
+	.sticky-phone-only {
+		display: flex;
+	}
+
+	.sticky-desktop-only {
+		display: none;
+	}
+}
+
+/* Widoczność tylko na komputerach */
+@media (min-width: 769px) {
+	.sticky-desktop-only {
+		display: flex;
+	}
+
+	.sticky-phone-only {
+		display: none;
+	}
+}
