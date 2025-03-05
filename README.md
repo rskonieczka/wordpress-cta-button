@@ -40,9 +40,23 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
 
 ## Installation
 
-1. Upload the plugin files to the `/wp-content/plugins/sticky-phone-button` directory, or install the plugin through the WordPress plugins screen directly
-2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Configure the plugin settings via the 'Wordpress CTA Button' option in the WordPress Settings menu
+### Method 1: WordPress Dashboard
+
+1. Go to Plugins → Add New in your WordPress admin panel
+2. Search for "Wordpress CTA Button"
+3. Click "Install Now" and then activate the plugin
+
+### Method 2: Manual Installation
+
+1. Download the plugin from [GitHub repository](https://github.com/rskonieczka/wordpress-cta-button/archive/refs/heads/main.zip)
+2. Upload the plugin files to the `/wp-content/plugins/sticky-phone-button` directory, or install the plugin through the WordPress plugins screen directly
+3. Activate the plugin through the 'Plugins' screen in WordPress
+4. Configure the plugin settings via the 'Wordpress CTA Button' option in the WordPress Settings menu
+
+### Requirements
+- WordPress 5.0 or higher
+- PHP 7.2 or higher
+- Modern web browser
 
 ## Configuration
 
