@@ -132,7 +132,15 @@ The button is rendered with the following HTML structure:
 
 ## License
 
-**Free to Use**
+**Free to Use - GPL v2**
+
+This plugin is released under the GPL v2 (GNU General Public License version 2) or later.
+
+### What GPL v2 means:
+- You are free to use, modify, and distribute the plugin
+- If you distribute modified versions, you must keep them under GPL
+- The source code must be made available
+- No warranty is provided
 
 This plugin is free to use for all purposes. However, if you need an invoice or official documentation for your commercial use, please purchase a license.
 
@@ -140,6 +148,12 @@ This plugin is free to use for all purposes. However, if you need an invoice or 
 - One-time payment for a single domain
 - Includes official invoice for business documentation
 - No recurring fees
+- **Business Benefits:**
+  - Tax-deductible expense for your company
+  - Proper accounting documentation for audits
+  - Proof of legal software acquisition
+  - Compliance with business software regulations
+  - Priority email support
 - Purchase online: [Buy license with invoice](https://buy.stripe.com/6oEcP3fJ90lN6oo9AK)
 
 ## Credits
