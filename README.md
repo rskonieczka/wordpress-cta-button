@@ -140,6 +140,7 @@ This plugin is free for personal and non-commercial use only. If you want to use
 - One-time payment for a single domain
 - Only a few dollars per license
 - No recurring fees
+- Purchase online: [Buy commercial license](https://buy.stripe.com/6oEcP3fJ90lN6oo9AK)
 
 For commercial licensing inquiries, please contact: evillage@evillage.pl
 
