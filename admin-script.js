@@ -2,39 +2,39 @@
  * Admin scripts for Sticky Phone Button plugin
  */
 jQuery(document).ready(function($) {
-    // Funkcja do aktualizacji podpowiedzi dla wartości odnośnika
+    // Function to update link value description
     function updateLinkValueDescription() {
         var linkType = $('select[name="sticky_phone_button_settings[sticky_phone_button_link_type]"]').val();
         var description = '';
         
         switch(linkType) {
             case 'tel':
-                description = 'Numer telefonu, np. +48501501501';
+                description = 'Phone number, e.g. +48501501501';
                 break;
             case 'mailto':
-                description = 'Adres e-mail, np. kontakt@example.com?subject=Zapytanie%20ofertowe';
+                description = 'Email address, e.g. kontakt@example.com?subject=Inquiry%20about%20offer';
                 break;
             case 'url':
-                description = 'Pełny adres strony internetowej, np. https://www.example.com';
+                description = 'Full website URL, e.g. https://www.example.com';
                 break;
             case 'sms':
-                description = 'Numer telefonu do SMS, np. +48501501501?body=Proszę%20o%20kontakt%20w%20sprawie%20oferty';
+                description = 'Phone number for SMS, e.g. +48501501501?body=Please%20contact%20me%20regarding%20the%20offer';
                 break;
             default:
-                description = 'Wartość linku zależna od wybranego typu';
+                description = 'Link value depending on the selected type';
         }
         
-        // Aktualizacja treści podpowiedzi
+        // Update description text
         $('input[name="sticky_phone_button_settings[sticky_phone_button_link_value]"]')
             .next('.description')
             .html(description);
     }
     
-    // Obsługa zmiany typu linku
+    // Handle link type change
     $('select[name="sticky_phone_button_settings[sticky_phone_button_link_type]"]').on('change', function() {
         updateLinkValueDescription();
     });
     
-    // Inicjalizacja podpowiedzi przy załadowaniu strony
+    // Initialize descriptions on page load
     updateLinkValueDescription();
 });

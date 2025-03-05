@@ -1,6 +1,8 @@
-# [WH] CTA Button - WordPress Plugin
+# Wordpress CTA Button - by WirtualnyHandlowiec.pl
 
 A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) button on all devices, allowing visitors to instantly connect or take action. The button can be fully customized in terms of position, display times, colors, and target actions.
+
+![Plugin Preview](view.png)
 
 ## Features
 
@@ -40,12 +42,12 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
 
 1. Upload the plugin files to the `/wp-content/plugins/sticky-phone-button` directory, or install the plugin through the WordPress plugins screen directly
 2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Configure the plugin settings via the '[WH] CTA Button' option in the WordPress Settings menu
+3. Configure the plugin settings via the 'Wordpress CTA Button' option in the WordPress Settings menu
 
 ## Configuration
 
 ### Basic Setup
-1. Navigate to Settings → [WH] CTA Button in your WordPress admin panel
+1. Navigate to Settings → Wordpress CTA Button in your WordPress admin panel
 2. Choose the devices you want to display the button on (mobile, desktop, or both)
 3. Select the link type (phone, email, URL, SMS)
 4. Enter the link value (phone number, email address, URL, etc.)

@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Animacja pulsowania przycisku CTA.
- * Przycisk będzie pulsował, zmieniając rozmiar i przezroczystość, z pauzą między pulsowaniami.
+ * CTA button pulsing animation.
+ * The button will pulse, changing size and opacity, with a pause between pulses.
  */
 function sticky_phone_button_animation_css()
 {
     $options = sticky_phone_button_get_settings();
     $blink_time_ms = isset($options['sticky_phone_button_blink_time']) ? $options['sticky_phone_button_blink_time'] : '4000';
 
-    // Konwersja z milisekund na sekundy dla CSS
+    // Convert from milliseconds to seconds for CSS
     $blink_time_sec = $blink_time_ms / 1000;
 
 ?> <style>
@@ -19,17 +19,17 @@ function sticky_phone_button_animation_css()
                 opacity: 1;
             }
             10% {
-                transform: scale(1.3);
+                transform: scale(1.05);
                 opacity: 1;
             }
             20% {
                 transform: scale(1);
                 opacity: 1;
             }
-            /* Od 20% do 100% przycisk pozostaje bez zmian - pauza między pulsowaniami */
+            /* From 20% to 100% the button remains unchanged - pause between pulses */
         }
         
-        /* Nowa klasa do aktywacji animacji - nie będzie stosowana automatycznie */
+        /* New class for animation activation - will not be applied automatically */
         .animate-pulse {
             animation: pulse <?php echo esc_attr($blink_time_sec); ?>s infinite;
         }

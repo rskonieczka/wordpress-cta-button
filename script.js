@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Sprawdzamy, czy mamy dostęp do zmiennej stickyPhoneButtonData
     if (typeof stickyPhoneButtonData === 'undefined') {
-        console.error('Błąd: Brak zmiennej stickyPhoneButtonData. Skrypt nie zostanie uruchomiony.');
+        console.error('Error: Missing stickyPhoneButtonData variable. Script will not run.');
         return;
     }
     
@@ -34,14 +34,14 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Mapowanie angielskich nazw dni na polskie (i odwrotnie)
     const dayNameMapping = {
-        'Monday': 'Poniedziałek',
-        'Tuesday': 'Wtorek',
-        'Wednesday': 'Środa',
-        'Thursday': 'Czwartek',
-        'Friday': 'Piątek',
-        'Saturday': 'Sobota',
-        'Sunday': 'Niedziela',
-        // Mapowanie odwrotne
+        'Monday': 'Monday',
+        'Tuesday': 'Tuesday',
+        'Wednesday': 'Wednesday',
+        'Thursday': 'Thursday',
+        'Friday': 'Friday',
+        'Saturday': 'Saturday',
+        'Sunday': 'Sunday',
+        // Reverse mapping 
         'Poniedziałek': 'Monday',
         'Wtorek': 'Tuesday',
         'Środa': 'Wednesday',
@@ -64,13 +64,13 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Mapowanie dni tygodnia na język polski (indeks -> nazwa)
     const dayIndexToNamePL = {
-        0: 'Niedziela',
-        1: 'Poniedziałek',
-        2: 'Wtorek',
-        3: 'Środa',
-        4: 'Czwartek',
-        5: 'Piątek',
-        6: 'Sobota'
+        0: 'Sunday',
+        1: 'Monday',
+        2: 'Tuesday',
+        3: 'Wednesday',
+        4: 'Thursday',
+        5: 'Friday',
+        6: 'Saturday'
     };
     
     // Funkcja do sprawdzania czy przycisk powinien być widoczny
@@ -79,17 +79,17 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Sprawdzenie dla trybu testowego - wymuś widoczność
         if (window.location.href.includes('alwaysShowCTA=1') || window.location.href.includes('forceCTA=1')) {
-            warn('TRYB TESTOWY - zawsze pokazuj CTA');
+            warn('TRYB WYMUSZONY: Pokazuję przycisk CTA');
             return true;
         }
         
         // UWAGA: Zmiana zachowania - domyślnie pokazuj przycisk, nawet jeśli brak ustawień
         if (!settings || typeof settings !== 'object') {
-            warn('Brak lub nieprawidłowe ustawienia dla przycisku CTA - pokazuję domyślnie');
+            warn('Missing or invalid CTA button settings - showing by default');
             return true;
         }
 
-        // Debugowanie ustawień
+        // Dane ustawień
         log('Dane ustawień:', {
             hasSettings: !!settings,
             isObject: typeof settings === 'object',
@@ -168,8 +168,8 @@ document.addEventListener('DOMContentLoaded', function () {
         
         log('Obecny dzień i czas:', currentDayEn, currentDayPl, today.toLocaleTimeString());
         
-        // Debugowanie aktualnego dnia
-        log('DEBUG - Dzisiejszy dzień:', { 
+        // Dane dotyczące bieżącego dnia
+        log('Dane dotyczące bieżącego dnia:', { 
             en: currentDayEn, 
             pl: currentDayPl,
             dayIndex: currentDayIndex,

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Plugin Name: [WH] CTA Button
+ * Plugin Name: Wordpress CTA Button - by WirtualnyHandlowiec.pl
  * Description: Wyświetla przyklejony przycisk CTA (Call to Action) po bokach ekranu na wszystkich urządzeniach, umożliwiający natychmiastowe połączenie lub wykonanie akcji. Dostosowanie miejsca, numeru telefonu, dni i godzin wyświetlania oraz kolorów.
  * Version: 1.3
  * Author: Wirtualny Handlowiec
@@ -86,7 +86,7 @@ function sticky_phone_button_add_admin_menu()
      */
     add_options_page(
         __('Settings', 'sticky-phone-button'),
-        __('[WH] CTA Button', 'sticky-phone-button'),
+        __('Wordpress CTA Button - by WirtualnyHandlowiec.pl', 'sticky-phone-button'),
         'manage_options',
         'sticky-phone-button',
         'sticky_phone_button_options_page'
@@ -126,7 +126,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the display device
     add_settings_field(
         'sticky_phone_button_display_device',
-        __('Wyświetlaj na', 'sticky-phone-button'),
+        __('Display on', 'sticky-phone-button'),
 
         /**
          * Callback function to render the select field for the device type.
@@ -141,7 +141,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the link type
     add_settings_field(
         'sticky_phone_button_link_type',
-        __('Typ odnośnika', 'sticky-phone-button'),
+        __('Link type', 'sticky-phone-button'),
 
         /**
          * Callback function to render the select field for the link type.
@@ -156,7 +156,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the target attribute
     add_settings_field(
         'sticky_phone_button_target',
-        __('Cel odnośnika', 'sticky-phone-button'),
+        __('Link target', 'sticky-phone-button'),
 
         /**
          * Callback function to render the select field for the target attribute.
@@ -171,7 +171,7 @@ function sticky_phone_button_settings_init()
     // Add a field for entering the link value
     add_settings_field(
         'sticky_phone_button_link_value',
-        __('Wartość odnośnika', 'sticky-phone-button'),
+        __('Link value', 'sticky-phone-button'),
 
         /**
          * Callback function to render the text field for the link value.
@@ -186,7 +186,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the button position
     add_settings_field(
         'sticky_phone_button_position',
-        __('Pozycja', 'sticky-phone-button'),
+        __('Position', 'sticky-phone-button'),
 
         /**
          * Callback function to render the select field for the button position.
@@ -201,7 +201,7 @@ function sticky_phone_button_settings_init()
     // Add a field for entering the CTA text
     add_settings_field(
         'sticky_phone_button_cta_text',
-        __('Tekst CTA', 'sticky-phone-button'),
+        __('CTA text', 'sticky-phone-button'),
         'sticky_phone_button_cta_text_render',
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
@@ -210,7 +210,7 @@ function sticky_phone_button_settings_init()
     // Add fields for selecting display days and hours
     add_settings_field(
         'sticky_phone_button_display_days',
-        __('Dni wyświetlania i godziny', 'sticky-phone-button'),
+        __('Display days and hours', 'sticky-phone-button'),
         'sticky_phone_button_display_days_render',
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
@@ -219,7 +219,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the text color of the CTA text
     add_settings_field(
         'sticky_phone_button_cta_text_color',
-        __('Kolor tekstu CTA', 'sticky-phone-button'),
+        __('CTA text color', 'sticky-phone-button'),
         'sticky_phone_button_cta_text_color_render',
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
@@ -228,7 +228,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the font weight of the CTA text
     add_settings_field(
         'sticky_phone_button_font_weight',
-        __('Grubość czcionki CTA', 'sticky-phone-button'),
+        __('CTA font weight', 'sticky-phone-button'),
         'sticky_phone_button_font_weight_render',
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
@@ -237,7 +237,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the background color
     add_settings_field(
         'sticky_phone_button_background_color',
-        __('Kolor tła koła', 'sticky-phone-button'),
+        __('Background color', 'sticky-phone-button'),
 
         /**
          * Callback function to render the color picker for the background color.
@@ -252,7 +252,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the icon color
     add_settings_field(
         'sticky_phone_button_icon_color',
-        __('Kolor ikony', 'sticky-phone-button'),
+        __('Icon color', 'sticky-phone-button'),
         'sticky_phone_button_icon_color_render',
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
@@ -261,7 +261,7 @@ function sticky_phone_button_settings_init()
     // Add a field for setting the blink time
     add_settings_field(
         'sticky_phone_button_blink_time',
-        __('Czas między mrugnięciami', 'sticky-phone-button'),
+        __('Blink time', 'sticky-phone-button'),
 
         /**
          * Callback function to render the text field for the blink time.
@@ -276,7 +276,7 @@ function sticky_phone_button_settings_init()
     // Add a field for custom CSS class
     add_settings_field(
         'sticky_phone_button_custom_class',
-        __('Niestandardowa klasa CSS', 'sticky-phone-button'),
+        __('Custom CSS class', 'sticky-phone-button'),
 
         /**
          * Callback function to render the text field for the custom CSS class.
@@ -291,7 +291,7 @@ function sticky_phone_button_settings_init()
     // Add a field for custom ID
     add_settings_field(
         'sticky_phone_button_custom_id',
-        __('Niestandardowe ID', 'sticky-phone-button'),
+        __('Custom ID', 'sticky-phone-button'),
 
         /**
          * Callback function to render the text field for the custom ID.
@@ -306,7 +306,7 @@ function sticky_phone_button_settings_init()
     // Add a field for enabling console logs
     add_settings_field(
         'sticky_phone_button_enable_debug',
-        __('Włącz logi konsolowe', 'sticky-phone-button'),
+        __('Enable console logs', 'sticky-phone-button'),
 
         /**
          * Callback function to render the checkbox for enabling console logs.
@@ -321,7 +321,7 @@ function sticky_phone_button_settings_init()
     // Add a field for selecting the icon name
     add_settings_field(
         'sticky_phone_button_icon_name',
-        __('Nazwa ikony', 'sticky-phone-button'),
+        __('Icon name', 'sticky-phone-button'),
         'sticky_phone_button_icon_name_render',
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
@@ -342,9 +342,9 @@ function sticky_phone_button_display_device_render()
     $display_device = isset($options['sticky_phone_button_display_device']) ? $options['sticky_phone_button_display_device'] : 'both';
     // Render the select field with options for phones, desktops and both
     ?> <select name='sticky_phone_button_settings[sticky_phone_button_display_device]'>
-        <option value='phones' <?php selected($display_device, 'phones'); ?>>Tylko na telefonach</option>
-        <option value='desktops' <?php selected($display_device, 'desktops'); ?>>Tylko na komputerach</option>
-        <option value='both' <?php selected($display_device, 'both'); ?>>Na telefonach i komputerach</option>
+        <option value='phones' <?php selected($display_device, 'phones'); ?>>Only on phones</option>
+        <option value='desktops' <?php selected($display_device, 'desktops'); ?>>Only on desktops</option>
+        <option value='both' <?php selected($display_device, 'both'); ?>>On both phones and desktops</option>
     </select> <?php
 }
 
@@ -360,12 +360,12 @@ function sticky_phone_button_link_type_render()
     $link_type = isset($options['sticky_phone_button_link_type']) ? $options['sticky_phone_button_link_type'] : 'tel';
     // Render the select field with options for link types
     ?> <select name='sticky_phone_button_settings[sticky_phone_button_link_type]'>
-        <option value='tel' <?php selected($link_type, 'tel'); ?>>Telefon</option>
-        <option value='mailto' <?php selected($link_type, 'mailto'); ?>>E-mail</option>
-        <option value='url' <?php selected($link_type, 'url'); ?>>Strona internetowa</option>
+        <option value='tel' <?php selected($link_type, 'tel'); ?>>Phone</option>
+        <option value='mailto' <?php selected($link_type, 'mailto'); ?>>Email</option>
+        <option value='url' <?php selected($link_type, 'url'); ?>>Website</option>
         <option value='sms' <?php selected($link_type, 'sms'); ?>>SMS</option>
     </select>
-    <p class="description">Wybierz typ linku, który będzie użyty do akcji przycisku.</p> <?php
+    <p class="description">Select the type of link to use for the button.</p> <?php
 }
 
 /**
@@ -385,7 +385,7 @@ function sticky_phone_button_target_render()
         <option value='_parent' <?php selected($target, '_parent'); ?>>_parent</option>
         <option value='_top' <?php selected($target, '_top'); ?>>_top</option>
     </select>
-    <p class="description">Wybierz atrybut target dla linku.</p> <?php
+    <p class="description">Select the target attribute for the link.</p> <?php
 }
 
 /**
@@ -405,19 +405,19 @@ function sticky_phone_button_link_value_render()
     <?php
     switch ($link_type) {
         case 'tel':
-            echo 'Numer telefonu, np. +48501501501';
+            echo 'Phone number, e.g. +48501501501';
             break;
         case 'mailto':
-            echo 'Adres e-mail, np. kontakt@example.com?subject=Zapytanie%20ofertowe';
+            echo 'Email address, e.g. kontakt@example.com?subject=Zapytanie%20ofertowe';
             break;
         case 'url':
-            echo 'Pełny adres strony internetowej, np. https://www.example.com';
+            echo 'Full website URL, e.g. https://www.example.com';
             break;
         case 'sms':
-            echo 'Numer telefonu do SMS, np. +48501501501?body=Proszę%20o%20kontakt%20w%20sprawie%20oferty';
+            echo 'Phone number for SMS, e.g. +48501501501?body=Proszę%20o%20kontakt%20w%20sprawie%20oferty';
             break;
         default:
-            echo 'Wartość linku zależna od wybranego typu';
+            echo 'Link value depending on the selected type';
     }
     ?>
     </p> <?php
@@ -434,7 +434,7 @@ function sticky_phone_button_cta_text_render()
     $cta_text = isset($options['sticky_phone_button_cta_text']) ? $options['sticky_phone_button_cta_text'] : '';
 
     ?> <textarea name='sticky_phone_button_settings[sticky_phone_button_cta_text]' rows='2' cols='40'><?php echo esc_textarea($cta_text); ?></textarea>
-    <p class="description">Tekst wyświetlany na przycisku. Pozostaw puste, aby wyświetlić tylko ikonę. <br/>&bull; &lt;b&gt; lub &lt;strong&gt; aby pogrubić wybrany tekst, np. &lt;b&gt;Zadzwoń&lt;/b&gt; teraz! <br/>&bull; Możesz wprowadzić tekst w wielu liniach używając  &lt;br/&gt; aby ręcznie dodać nową linię</p> <?php
+    <p class="description">Text to display on the button. Leave blank to show only the icon. <br/>&bull; &lt;b&gt; or &lt;strong&gt; to bold selected text, e.g. &lt;b&gt;Call&lt;/b&gt; now! <br/>&bull; You can enter text in multiple lines using  &lt;br/&gt; to manually add a new line</p> <?php
 }
 
 /**
@@ -463,10 +463,10 @@ function sticky_phone_button_font_weight_render()
     $font_weight = isset($options['sticky_phone_button_font_weight']) ? $options['sticky_phone_button_font_weight'] : 'normal';
 
     ?> <select name='sticky_phone_button_settings[sticky_phone_button_font_weight]'>
-        <option value='normal' <?php selected($font_weight, 'normal'); ?>>Normalna</option>
-        <option value='bold' <?php selected($font_weight, 'bold'); ?>>Pogrubiona</option>
-        <option value='lighter' <?php selected($font_weight, 'lighter'); ?>>Lżejsza</option>
-        <option value='bolder' <?php selected($font_weight, 'bolder'); ?>>Grubsza</option>
+        <option value='normal' <?php selected($font_weight, 'normal'); ?>>Normal</option>
+        <option value='bold' <?php selected($font_weight, 'bold'); ?>>Bold</option>
+        <option value='lighter' <?php selected($font_weight, 'lighter'); ?>>Lighter</option>
+        <option value='bolder' <?php selected($font_weight, 'bolder'); ?>>Bolder</option>
         <option value='100' <?php selected($font_weight, '100'); ?>>100</option>
         <option value='200' <?php selected($font_weight, '200'); ?>>200</option>
         <option value='300' <?php selected($font_weight, '300'); ?>>300</option>
@@ -477,7 +477,7 @@ function sticky_phone_button_font_weight_render()
         <option value='800' <?php selected($font_weight, '800'); ?>>800</option>
         <option value='900' <?php selected($font_weight, '900'); ?>>900</option>
     </select>
-    <p class="description">Wybierz grubość czcionki dla tekstu CTA.</p>
+    <p class="description">Select the font weight for the CTA text.</p>
 <?php
 }
 
@@ -494,8 +494,8 @@ function sticky_phone_button_blink_time_render()
 ?> <input type="number" 
         name="sticky_phone_button_settings[sticky_phone_button_blink_time]" value="<?php echo esc_attr($blink_time); ?>"
         min="500" max="60000">
-    <p class="description"> Czas (w milisekundach) co ile ma mrugać przycisk. <br> Wartość musi być z zakresu 500-60000 ms.<br>
-    Przelicznik: 1 sekunda = 1000 milisekund (np. 4000 ms = 4 s, 5500 ms = 5,5 s).
+    <p class="description"> Time (in milliseconds) for the blink animation. <br> Value must be between 500-60000 ms.<br>
+    Converter: 1 second = 1000 milliseconds (e.g. 4000 ms = 4 s, 5500 ms = 5.5 s).
     </p> <?php
 }
 
@@ -512,14 +512,14 @@ function sticky_phone_button_position_render()
 
     // Define the available positions for the sticky phone button
     $positions = [
-        'bottom-right' => 'Prawy dolny róg',
-        'middle-right' => 'Prawy środek',
-        'top-right' => 'Prawy górny róg',
-        'bottom-left' => 'Lewy dolny róg',
-        'middle-left' => 'Lewy środek',
-        'top-left' => 'Lewy górny róg',
-        'bottom-center' => 'Dół środek',
-        'top-center' => 'Góra środek',
+        'bottom-right' => 'Bottom right corner',
+        'middle-right' => 'Right middle',
+        'top-right' => 'Top right corner',
+        'bottom-left' => 'Bottom left corner',
+        'middle-left' => 'Left middle',
+        'top-left' => 'Top left corner',
+        'bottom-center' => 'Bottom center',
+        'top-center' => 'Top center',
     ];
     ?> <select name='sticky_phone_button_settings[sticky_phone_button_position]'>
         <?php
@@ -533,13 +533,13 @@ function sticky_phone_button_position_render()
 // Renderowanie checkboxów
 $days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 $days_of_week_pl = [
-    'Monday' => 'Poniedziałek',
-    'Tuesday' => 'Wtorek',
-    'Wednesday' => 'Środa',
-    'Thursday' => 'Czwartek',
-    'Friday' => 'Piątek',
-    'Saturday' => 'Sobota',
-    'Sunday' => 'Niedziela'
+    'Monday' => 'Monday',
+    'Tuesday' => 'Tuesday',
+    'Wednesday' => 'Wednesday',
+    'Thursday' => 'Thursday',
+    'Friday' => 'Friday',
+    'Saturday' => 'Saturday',
+    'Sunday' => 'Sunday'
 ];
 
 /**
@@ -558,7 +558,7 @@ function sticky_phone_button_display_days_render()
     $options = sticky_phone_button_get_settings();
 
     // Dodaj instrukcję
-    echo '<p><strong>Uwaga:</strong> Pozostawienie pustego pola godzin spowoduje, że przycisk będzie wyświetlany przez cały dzień.</p>';
+    echo '<p><strong>Note:</strong> Leaving the hours field blank will display the button throughout the day.</p>';
 
     // Dla każdego dnia wyświetl checkbox i pole godziny
     foreach ($days_of_week as $day) {
@@ -671,7 +671,7 @@ function sticky_phone_button_icon_color_render()
     $options = sticky_phone_button_get_settings();
     ?> <input type='color' name='sticky_phone_button_settings[sticky_phone_button_icon_color]'
         value='<?php echo esc_attr(isset($options['sticky_phone_button_icon_color']) ? $options['sticky_phone_button_icon_color'] : '#FFF'); ?>'>
-    <p class="description">Kolor ikony w przycisku.</p>
+    <p class="description">Icon color in the button.</p>
 <?php
 }
 
@@ -706,7 +706,7 @@ function sticky_phone_button_custom_class_render()
     $options = sticky_phone_button_get_settings();
 ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_custom_class]'
         value='<?php echo esc_attr(isset($options['sticky_phone_button_custom_class']) ? $options['sticky_phone_button_custom_class'] : ''); ?>'>
-    <p class="description">Dodatkowe klasy CSS oddzielone spacją, np. "myclass1 myclass2".</p>
+    <p class="description">Additional CSS classes separated by space, e.g. "myclass1 myclass2".</p>
 <?php
 }
 
@@ -724,7 +724,7 @@ function sticky_phone_button_custom_id_render()
     $options = sticky_phone_button_get_settings();
 ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_custom_id]'
         value='<?php echo esc_attr(isset($options['sticky_phone_button_custom_id']) ? $options['sticky_phone_button_custom_id'] : ''); ?>'>
-    <p class="description">Niestandardowe ID dla przycisku. Jeśli puste, użyte zostanie domyślne ID: "sticky-phone-button".</p>
+    <p class="description">Custom ID for the button. If blank, the default ID "sticky-phone-button" will be used.</p>
 <?php
 }
 
@@ -742,7 +742,7 @@ function sticky_phone_button_enable_debug_render()
     $options = sticky_phone_button_get_settings();
     $checked = isset($options['sticky_phone_button_enable_debug']) ? 'checked' : '';
 ?> <input type='checkbox' name='sticky_phone_button_settings[sticky_phone_button_enable_debug]' <?php echo $checked; ?>>
-    <p class="description">Włącz logi w konsoli JavaScript dla celów debugowania. Wyłącz na produkcji.</p>
+    <p class="description">Enable JavaScript console logs for debugging. Disable on production.</p>
 <?php
 }
 
@@ -756,29 +756,29 @@ function sticky_phone_button_icon_name_render()
 
     // Lista popularnych ikon Material Symbols przydatnych dla przycisku CTA
     $popular_icons = array(
-        'call' => 'Telefon',
-        'phone_enabled' => 'Telefon (alternatywny)',
-        'smartphone' => 'Smartfon',
+        'call' => 'Phone',
+        'phone_enabled' => 'Phone (alternative)',
+        'smartphone' => 'Smartphone',
         'mail' => 'Email',
-        'chat' => 'Czat',
+        'chat' => 'Chat',
         'forum' => 'Forum',
         'sms' => 'SMS',
-        'support_agent' => 'Obsługa klienta',
-        'headset_mic' => 'Słuchawki z mikrofonem',
-        'contact_support' => 'Wsparcie techniczne',
-        'contact_page' => 'Kontakt',
-        'help' => 'Pomoc',
-        'info' => 'Informacje',
-        'shopping_cart' => 'Koszyk',
-        'payments' => 'Płatności',
-        'local_offer' => 'Oferta',
-        'campaign' => 'Promocja',
+        'support_agent' => 'Support agent',
+        'headset_mic' => 'Headset with microphone',
+        'contact_support' => 'Contact support',
+        'contact_page' => 'Contact',
+        'help' => 'Help',
+        'info' => 'Info',
+        'shopping_cart' => 'Shopping cart',
+        'payments' => 'Payments',
+        'local_offer' => 'Offer',
+        'campaign' => 'Promotion',
         'home' => 'Home',
         'check' => 'Check',
-        'chevron_right' => 'Strzałka w prawo',
-        'chevron_left' => 'Strzałka w lewo',
-        'done_outline' => 'Zrobione',
-        'featured_seasonal_and_gifts' => 'Promocje, sezonowe i prezenty'
+        'chevron_right' => 'Right chevron',
+        'chevron_left' => 'Left chevron',
+        'done_outline' => 'Done outline',
+        'featured_seasonal_and_gifts' => 'Featured, seasonal and gifts'
     );
 
 ?> <select name='sticky_phone_button_settings[sticky_phone_button_icon_name]'>
@@ -790,11 +790,11 @@ function sticky_phone_button_icon_name_render()
     </select>
     <div style="margin-top: 10px; font-size: 24px;">
         <span class="material-symbols-rounded" style="vertical-align: middle;"><?php echo esc_html($icon_name); ?></span>
-        <span style="vertical-align: middle; margin-left: 10px;">Podgląd ikony</span>
+        <span style="vertical-align: middle; margin-left: 10px;">Icon preview</span>
     </div>
     <p class="description">
-        Wybierz ikonę dla przycisku z biblioteki <a href="https://fonts.google.com/icons" target="_blank">Material Symbols</a>. 
-        Jeśli chcesz użyć innej ikony, wprowadź jej nazwę w kodzie wtyczki.
+        Select an icon for the button from the <a href="https://fonts.google.com/icons" target="_blank">Material Symbols</a> library. 
+        If you want to use a different icon, enter its name in the plugin code.
     </p>
     <script>
         jQuery(document).ready(function($) {
@@ -889,7 +889,7 @@ function sticky_phone_button_options_page()
 {
     // Form with the plugin settings
     ?> <form action='options.php' method='post'>
-        <h2>[WH] CTA Button</h2> <?php
+        <h2>Wordpress CTA Button - by WirtualnyHandlowiec.pl</h2> <?php
     // Display the settings sections
     settings_fields('stickyPhoneButtonSettings');
     do_settings_sections('stickyPhoneButtonSettings');
