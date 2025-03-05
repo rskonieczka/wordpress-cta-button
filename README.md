@@ -130,13 +130,22 @@ The button is rendered with the following HTML structure:
 - Added scheduling options
 - Implemented customization features
 
+## License
+
+**Non-Commercial Use Only**
+
+This plugin is free for personal and non-commercial use only. If you want to use it on a commercial website, you need to purchase a commercial license.
+
+### Commercial License
+- One-time payment for a single domain
+- Only a few dollars per license
+- No recurring fees
+
+For commercial licensing inquiries, please contact: evillage@evillage.pl
+
 ## Credits
 
 Developed by [Wirtualny Handlowiec](http://wirtualnyhandlowiec.pl/)
-
-## License
-
-This WordPress plugin is licensed under the GPL v2 or later.
 
 ---
 

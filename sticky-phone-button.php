@@ -2,7 +2,7 @@
 
 /*
  * Plugin Name: Wordpress CTA Button - by WirtualnyHandlowiec.pl
- * Description: Wyświetla przyklejony przycisk CTA (Call to Action) po bokach ekranu na wszystkich urządzeniach, umożliwiający natychmiastowe połączenie lub wykonanie akcji. Dostosowanie miejsca, numeru telefonu, dni i godzin wyświetlania oraz kolorów.
+ * Description: Displays a sticky CTA (Call to Action) button on the sides of the screen on all devices, allowing you to instantly call or take action. Customize location, phone number, days and times of display, and colors.
  * Version: 1.3
  * Author: Wirtualny Handlowiec
  * Author URI: http://wirtualnyhandlowiec.pl/
@@ -86,7 +86,7 @@ function sticky_phone_button_add_admin_menu()
      */
     add_options_page(
         __('Settings', 'sticky-phone-button'),
-        __('Wordpress CTA Button - by WirtualnyHandlowiec.pl', 'sticky-phone-button'),
+        __('Wordpress CTA Button', 'sticky-phone-button'),
         'manage_options',
         'sticky-phone-button',
         'sticky_phone_button_options_page'
