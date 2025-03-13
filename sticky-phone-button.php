@@ -944,8 +944,8 @@ function sticky_phone_button_css()
         }
         
         .sticky-phone-button .cta-text {
-            font-size: 1vh;
-            line-height: 1.2;
+            font-size: 1.3vh;
+            line-height: 1.3;
             padding: 0 0 0 10px;
             margin: 0 5px; /* Dodaję marginesy z obu stron */
             display: block;
