@@ -103,6 +103,62 @@ document.addEventListener('DOMContentLoaded', function () {
             return true;
         }
 
+        // Sprawdź filtrowanie URL-i
+        const currentUrl = window.location.href;
+        const urlInclude = settings.sticky_phone_button_url_include || '';
+        const urlExclude = settings.sticky_phone_button_url_exclude || '';
+        
+        log('Sprawdzanie filtrowania URL-i:', {
+            currentUrl: currentUrl,
+            urlInclude: urlInclude,
+            urlExclude: urlExclude
+        });
+        
+        // Sprawdź reguły wykluczania (blacklist) - mają priorytet
+        if (urlExclude.trim() !== '') {
+            const excludeRules = urlExclude.split('\n').map(rule => rule.trim()).filter(rule => rule !== '');
+            for (const rule of excludeRules) {
+                if (currentUrl.includes(rule)) {
+                    // ZMIANA: W trybie debug, ignoruj reguły wykluczania
+                    if (window.location.href.includes('debug=1') || 
+                        window.location.href.includes('forceCTA=1') || 
+                        window.location.href.includes('show=1')) {
+                        warn(`Debug: URL zawiera wykluczony fragment "${rule}", ale wymuszam wyświetlenie`);
+                        break; // Przerwij sprawdzanie wykluczeń, ale kontynuuj inne sprawdzenia
+                    } else {
+                        log(`URL zawiera wykluczony fragment "${rule}" - ukrywam przycisk`);
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        // Sprawdź reguły włączania (whitelist)
+        if (urlInclude.trim() !== '') {
+            const includeRules = urlInclude.split('\n').map(rule => rule.trim()).filter(rule => rule !== '');
+            let urlMatches = false;
+            
+            for (const rule of includeRules) {
+                if (currentUrl.includes(rule)) {
+                    log(`URL zawiera wymagany fragment "${rule}" - kontynuuję sprawdzanie`);
+                    urlMatches = true;
+                    break;
+                }
+            }
+            
+            if (!urlMatches) {
+                // ZMIANA: W trybie debug, ignoruj reguły włączania
+                if (window.location.href.includes('debug=1') || 
+                    window.location.href.includes('forceCTA=1') || 
+                    window.location.href.includes('show=1')) {
+                    warn('Debug: URL nie zawiera wymaganych fragmentów, ale wymuszam wyświetlenie');
+                } else {
+                    log('URL nie zawiera żadnego z wymaganych fragmentów - ukrywam przycisk');
+                    return false;
+                }
+            }
+        }
+
         // Sprawdź ustawienia urządzenia
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const isDesktop = !isMobile;

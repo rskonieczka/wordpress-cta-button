@@ -10,6 +10,11 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
 - **Device Selection**: Display the button on mobile devices, desktops, or both
 - **Position Control**: Place the button in any of the 8 positions (top, middle or bottom, combined with left, center or right)
 - **Scheduling Options**: Configure the button to display on specific days and during specific hours
+- **URL Filtering**: Advanced visibility control based on page URLs
+  - **Show on URLs containing** (whitelist): Display button only on pages with specific URL fragments
+  - **Hide on URLs containing** (blacklist): Hide button on pages with specific URL fragments
+  - Exclude rules have priority over include rules
+  - Debug mode support (ignores URL rules when `?debug=1`, `?forceCTA=1`, or `?show=1` is used)
 - **Visibility Rules**: Show or hide the button based on various conditions
 
 ### Flexible Action Configuration
@@ -28,6 +33,16 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
   - Text color
   - Font weight
   - Custom CSS classes and IDs
+- **Border & Shape Control**:
+  - Border radius (from square to fully circular buttons)
+  - Border width, style, and color
+  - 9 different border styles (solid, dashed, dotted, double, groove, ridge, inset, outset, none)
+- **Shadow Effects**:
+  - Enable/disable shadow
+  - Shadow position (offset X/Y)
+  - Shadow blur and spread control
+  - Shadow color with transparency support
+  - Inset (inner) shadow option
 - **Animation Effects**: Configurable pulsing animation with adjustable timing
 
 ### Advanced Features
@@ -71,18 +86,58 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
 8. Customize colors and icon
 
 ### Advanced Options
-- Add custom CSS classes or IDs for additional styling
-- Enable debug mode for troubleshooting
-- Adjust blink animation timing
-- Configure font weight and text appearance
+- **URL Filtering**: Configure whitelist/blacklist rules for specific pages
+- **Border Customization**: Set border radius, width, style, and color
+- **Shadow Effects**: Control shadow position, blur, spread, color, and inset options
+- **Custom CSS**: Add custom CSS classes or IDs for additional styling
+- **Debug Mode**: Enable console logs and testing parameters
+- **Animation**: Adjust blink animation timing
+- **Typography**: Configure font weight and text appearance
+
+### URL Filtering Examples
+```
+Show on URLs containing (whitelist):
+product
+/shop/
+category
+
+Hide on URLs containing (blacklist):
+contact
+/admin/
+checkout
+```
+
+### Border & Shadow Examples
+```
+Border Radius:
+50px - rounded corners (default)
+0px - square corners
+25px - slightly rounded
+50% - fully circular
+
+Shadow Effects:
+0px 2px 10px rgba(0,0,0,0.3) - subtle drop shadow
+2px 2px 5px rgba(0,0,0,0.5) - offset shadow
+inset 0px 2px 4px rgba(0,0,0,0.2) - inner shadow
+```
 
 ## Testing
 
 The plugin includes several debug parameters that can be added to any page URL to test functionality:
 
-- `?debug=1`: Forces the button to show regardless of device settings
-- `?alwaysShowCTA=1` or `?forceCTA=1`: Always displays the button ignoring time-based rules
+- `?debug=1`: Forces the button to show regardless of device settings and URL filtering rules
+- `?alwaysShowCTA=1` or `?forceCTA=1`: Always displays the button ignoring time-based rules and URL filters
+- `?show=1`: Forces button display ignoring all visibility conditions
 - `?forceInit=1`: Forces button initialization
+
+### Debug Examples
+```
+https://yoursite.com/contact/?debug=1
+https://yoursite.com/admin/?forceCTA=1
+https://yoursite.com/checkout/?show=1
+```
+
+**Note**: Debug parameters override URL filtering rules, making testing easier during development.
 
 ## Technical Details
 
@@ -119,7 +174,15 @@ The button is rendered with the following HTML structure:
 
 ## Version History
 
-### 1.3 (Current)
+### 1.4 (Current)
+- **URL Filtering System**: Advanced whitelist/blacklist functionality for URL-based visibility control
+- **Border & Shape Control**: Complete border customization (radius, width, style, color) with 9 border styles
+- **Shadow Effects**: Full box-shadow management (enable/disable, position, blur, spread, color, inset option)
+- **Enhanced Styling**: Dynamic CSS generation for all new visual options
+- **Debug Mode Improvements**: URL filtering respects debug parameters for testing
+- **Backward Compatibility**: All existing settings preserved during updates
+
+### 1.3
 - Added Material Icons integration
 - Improved caching prevention
 - Enhanced debug mode functionality

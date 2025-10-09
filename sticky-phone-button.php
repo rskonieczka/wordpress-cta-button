@@ -38,7 +38,7 @@ function sticky_phone_button_enqueue_scripts()
     $settings = sticky_phone_button_get_settings();
 
     // Sprawdź, czy włączone debugowanie
-    $enable_debug = isset($settings['sticky_phone_button_enable_debug']) ? true : false;
+    $enable_debug = isset($settings['sticky_phone_button_enable_debug']) && $settings['sticky_phone_button_enable_debug'] == 1 ? true : false;
 
     // Przekaż ustawienia do skryptu JS w formacie JSON
     wp_localize_script('sticky-phone-button-script', 'stickyPhoneButtonData', array(
@@ -323,6 +323,123 @@ function sticky_phone_button_settings_init()
         'sticky_phone_button_icon_name',
         __('Icon name', 'sticky-phone-button'),
         'sticky_phone_button_icon_name_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for URL include rules (whitelist)
+    add_settings_field(
+        'sticky_phone_button_url_include',
+        __('Show on URLs containing', 'sticky-phone-button'),
+        'sticky_phone_button_url_include_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for URL exclude rules (blacklist)
+    add_settings_field(
+        'sticky_phone_button_url_exclude',
+        __('Hide on URLs containing', 'sticky-phone-button'),
+        'sticky_phone_button_url_exclude_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for border radius
+    add_settings_field(
+        'sticky_phone_button_border_radius',
+        __('Border radius', 'sticky-phone-button'),
+        'sticky_phone_button_border_radius_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for border width
+    add_settings_field(
+        'sticky_phone_button_border_width',
+        __('Border width', 'sticky-phone-button'),
+        'sticky_phone_button_border_width_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for border style
+    add_settings_field(
+        'sticky_phone_button_border_style',
+        __('Border style', 'sticky-phone-button'),
+        'sticky_phone_button_border_style_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for border color
+    add_settings_field(
+        'sticky_phone_button_border_color',
+        __('Border color', 'sticky-phone-button'),
+        'sticky_phone_button_border_color_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for shadow enabled/disabled
+    add_settings_field(
+        'sticky_phone_button_shadow_enabled',
+        __('Enable shadow', 'sticky-phone-button'),
+        'sticky_phone_button_shadow_enabled_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for shadow offset X
+    add_settings_field(
+        'sticky_phone_button_shadow_offset_x',
+        __('Shadow offset X', 'sticky-phone-button'),
+        'sticky_phone_button_shadow_offset_x_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for shadow offset Y
+    add_settings_field(
+        'sticky_phone_button_shadow_offset_y',
+        __('Shadow offset Y', 'sticky-phone-button'),
+        'sticky_phone_button_shadow_offset_y_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for shadow blur radius
+    add_settings_field(
+        'sticky_phone_button_shadow_blur',
+        __('Shadow blur', 'sticky-phone-button'),
+        'sticky_phone_button_shadow_blur_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for shadow spread radius
+    add_settings_field(
+        'sticky_phone_button_shadow_spread',
+        __('Shadow spread', 'sticky-phone-button'),
+        'sticky_phone_button_shadow_spread_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for shadow color
+    add_settings_field(
+        'sticky_phone_button_shadow_color',
+        __('Shadow color', 'sticky-phone-button'),
+        'sticky_phone_button_shadow_color_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
+
+    // Add a field for inset shadow
+    add_settings_field(
+        'sticky_phone_button_shadow_inset',
+        __('Inset shadow', 'sticky-phone-button'),
+        'sticky_phone_button_shadow_inset_render',
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
     );
@@ -740,7 +857,7 @@ function sticky_phone_button_custom_id_render()
 function sticky_phone_button_enable_debug_render()
 {
     $options = sticky_phone_button_get_settings();
-    $checked = isset($options['sticky_phone_button_enable_debug']) ? 'checked' : '';
+    $checked = isset($options['sticky_phone_button_enable_debug']) && $options['sticky_phone_button_enable_debug'] == 1 ? 'checked' : '';
 ?> <input type='checkbox' name='sticky_phone_button_settings[sticky_phone_button_enable_debug]' <?php echo $checked; ?>>
     <p class="description">Enable JavaScript console logs for debugging. Disable on production.</p>
 <?php
@@ -805,6 +922,274 @@ function sticky_phone_button_icon_name_render()
             });
         });
     </script>
+    <?php
+}
+
+/**
+ * Render textarea field for URL include rules (whitelist).
+ * This field allows users to specify URL patterns where the button should be displayed.
+ * @return void
+ */
+function sticky_phone_button_url_include_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $url_include = isset($options['sticky_phone_button_url_include']) ? $options['sticky_phone_button_url_include'] : '';
+
+    ?> <textarea name='sticky_phone_button_settings[sticky_phone_button_url_include]' rows='3' cols='50' placeholder='product&#10;shop&#10;category'><?php echo esc_textarea($url_include); ?></textarea>
+    <p class="description">
+        Show button only on URLs containing these text fragments (one per line).<br/>
+        <strong>Examples:</strong><br/>
+        • <code>product</code> - shows on URLs containing "product"<br/>
+        • <code>/shop/</code> - shows on URLs containing "/shop/"<br/>
+        • <code>category</code> - shows on URLs containing "category"<br/>
+        <strong>Leave empty to show on all pages</strong> (unless excluded below).
+    </p> <?php
+}
+
+/**
+ * Render textarea field for URL exclude rules (blacklist).
+ * This field allows users to specify URL patterns where the button should NOT be displayed.
+ * @return void
+ */
+function sticky_phone_button_url_exclude_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $url_exclude = isset($options['sticky_phone_button_url_exclude']) ? $options['sticky_phone_button_url_exclude'] : '';
+
+    ?> <textarea name='sticky_phone_button_settings[sticky_phone_button_url_exclude]' rows='3' cols='50' placeholder='contact&#10;about&#10;admin'><?php echo esc_textarea($url_exclude); ?></textarea>
+    <p class="description">
+        Hide button on URLs containing these text fragments (one per line).<br/>
+        <strong>Examples:</strong><br/>
+        • <code>contact</code> - hides on URLs containing "contact"<br/>
+        • <code>/admin/</code> - hides on URLs containing "/admin/"<br/>
+        • <code>checkout</code> - hides on URLs containing "checkout"<br/>
+        <strong>Exclude rules have priority</strong> over include rules.
+    </p> <?php
+}
+
+/**
+ * Render input field for border radius.
+ * This field allows users to specify the border radius of the button.
+ * @return void
+ */
+function sticky_phone_button_border_radius_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $border_radius = isset($options['sticky_phone_button_border_radius']) ? $options['sticky_phone_button_border_radius'] : '50px';
+
+    ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_border_radius]' 
+        value='<?php echo esc_attr($border_radius); ?>' placeholder='50px'>
+    <p class="description">
+        Border radius for the button corners. Examples:<br/>
+        • <code>50px</code> - rounded corners<br/>
+        • <code>0px</code> - square corners<br/>
+        • <code>25px</code> - slightly rounded<br/>
+        • <code>50%</code> - fully circular (for square buttons)
+    </p> <?php
+}
+
+/**
+ * Render input field for border width.
+ * This field allows users to specify the border width of the button.
+ * @return void
+ */
+function sticky_phone_button_border_width_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $border_width = isset($options['sticky_phone_button_border_width']) ? $options['sticky_phone_button_border_width'] : '0px';
+
+    ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_border_width]' 
+        value='<?php echo esc_attr($border_width); ?>' placeholder='0px'>
+    <p class="description">
+        Border width around the button. Examples:<br/>
+        • <code>0px</code> - no border<br/>
+        • <code>1px</code> - thin border<br/>
+        • <code>2px</code> - medium border<br/>
+        • <code>3px</code> - thick border
+    </p> <?php
+}
+
+/**
+ * Render select field for border style.
+ * This field allows users to choose the border style of the button.
+ * @return void
+ */
+function sticky_phone_button_border_style_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $border_style = isset($options['sticky_phone_button_border_style']) ? $options['sticky_phone_button_border_style'] : 'solid';
+
+    $border_styles = array(
+        'none' => 'None',
+        'solid' => 'Solid',
+        'dashed' => 'Dashed',
+        'dotted' => 'Dotted',
+        'double' => 'Double',
+        'groove' => 'Groove',
+        'ridge' => 'Ridge',
+        'inset' => 'Inset',
+        'outset' => 'Outset'
+    );
+
+    ?> <select name='sticky_phone_button_settings[sticky_phone_button_border_style]'>
+        <?php foreach ($border_styles as $value => $label): ?>
+            <option value='<?php echo esc_attr($value); ?>' <?php selected($border_style, $value); ?>>
+                <?php echo esc_html($label); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <p class="description">Style of the border around the button.</p> <?php
+}
+
+/**
+ * Render color picker for border color.
+ * This field allows users to choose the border color of the button.
+ * @return void
+ */
+function sticky_phone_button_border_color_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $border_color = isset($options['sticky_phone_button_border_color']) ? $options['sticky_phone_button_border_color'] : '#000000';
+
+    ?> <input type='color' name='sticky_phone_button_settings[sticky_phone_button_border_color]'
+        value='<?php echo esc_attr($border_color); ?>'>
+    <p class="description">Color of the border around the button.</p>
+    <?php
+}
+
+/**
+ * Render checkbox for shadow enabled/disabled.
+ * This field allows users to enable or disable the shadow effect.
+ * @return void
+ */
+function sticky_phone_button_shadow_enabled_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $shadow_enabled = isset($options['sticky_phone_button_shadow_enabled']) && $options['sticky_phone_button_shadow_enabled'] == 1 ? 'checked' : '';
+
+    ?> <input type='checkbox' name='sticky_phone_button_settings[sticky_phone_button_shadow_enabled]' <?php echo $shadow_enabled; ?>>
+    <p class="description">Enable shadow effect for the button.</p>
+    <?php
+}
+
+/**
+ * Render input field for shadow offset X.
+ * This field allows users to specify the horizontal offset of the shadow.
+ * @return void
+ */
+function sticky_phone_button_shadow_offset_x_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $shadow_offset_x = isset($options['sticky_phone_button_shadow_offset_x']) ? $options['sticky_phone_button_shadow_offset_x'] : '0px';
+
+    ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_shadow_offset_x]' 
+        value='<?php echo esc_attr($shadow_offset_x); ?>' placeholder='0px'>
+    <p class="description">
+        Horizontal shadow offset. Examples:<br/>
+        • <code>0px</code> - no horizontal offset<br/>
+        • <code>2px</code> - shadow to the right<br/>
+        • <code>-2px</code> - shadow to the left<br/>
+        • <code>5px</code> - larger offset to the right
+    </p> <?php
+}
+
+/**
+ * Render input field for shadow offset Y.
+ * This field allows users to specify the vertical offset of the shadow.
+ * @return void
+ */
+function sticky_phone_button_shadow_offset_y_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $shadow_offset_y = isset($options['sticky_phone_button_shadow_offset_y']) ? $options['sticky_phone_button_shadow_offset_y'] : '0px';
+
+    ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_shadow_offset_y]' 
+        value='<?php echo esc_attr($shadow_offset_y); ?>' placeholder='0px'>
+    <p class="description">
+        Vertical shadow offset. Examples:<br/>
+        • <code>0px</code> - no vertical offset<br/>
+        • <code>2px</code> - shadow below<br/>
+        • <code>-2px</code> - shadow above<br/>
+        • <code>10px</code> - shadow far below
+    </p> <?php
+}
+
+/**
+ * Render input field for shadow blur radius.
+ * This field allows users to specify the blur radius of the shadow.
+ * @return void
+ */
+function sticky_phone_button_shadow_blur_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $shadow_blur = isset($options['sticky_phone_button_shadow_blur']) ? $options['sticky_phone_button_shadow_blur'] : '10px';
+
+    ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_shadow_blur]' 
+        value='<?php echo esc_attr($shadow_blur); ?>' placeholder='10px'>
+    <p class="description">
+        Shadow blur radius. Examples:<br/>
+        • <code>0px</code> - sharp shadow<br/>
+        • <code>5px</code> - slightly blurred<br/>
+        • <code>10px</code> - medium blur (default)<br/>
+        • <code>20px</code> - very soft shadow
+    </p> <?php
+}
+
+/**
+ * Render input field for shadow spread radius.
+ * This field allows users to specify the spread radius of the shadow.
+ * @return void
+ */
+function sticky_phone_button_shadow_spread_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $shadow_spread = isset($options['sticky_phone_button_shadow_spread']) ? $options['sticky_phone_button_shadow_spread'] : '0px';
+
+    ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_shadow_spread]' 
+        value='<?php echo esc_attr($shadow_spread); ?>' placeholder='0px'>
+    <p class="description">
+        Shadow spread radius. Examples:<br/>
+        • <code>0px</code> - no spread (default)<br/>
+        • <code>2px</code> - shadow larger than element<br/>
+        • <code>-2px</code> - shadow smaller than element<br/>
+        • <code>5px</code> - much larger shadow
+    </p> <?php
+}
+
+/**
+ * Render color picker for shadow color.
+ * This field allows users to choose the color of the shadow.
+ * @return void
+ */
+function sticky_phone_button_shadow_color_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $shadow_color = isset($options['sticky_phone_button_shadow_color']) ? $options['sticky_phone_button_shadow_color'] : 'rgba(0, 0, 0, 0.5)';
+
+    ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_shadow_color]'
+        value='<?php echo esc_attr($shadow_color); ?>' placeholder='rgba(0, 0, 0, 0.5)'>
+    <p class="description">
+        Shadow color. Examples:<br/>
+        • <code>rgba(0, 0, 0, 0.5)</code> - semi-transparent black (default)<br/>
+        • <code>#000000</code> - solid black<br/>
+        • <code>rgba(255, 0, 0, 0.3)</code> - semi-transparent red<br/>
+        • <code>rgba(0, 0, 0, 0.2)</code> - very light shadow
+    </p>
+    <?php
+}
+
+/**
+ * Render checkbox for inset shadow.
+ * This field allows users to enable inset (inner) shadow effect.
+ * @return void
+ */
+function sticky_phone_button_shadow_inset_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $shadow_inset = isset($options['sticky_phone_button_shadow_inset']) && $options['sticky_phone_button_shadow_inset'] == 1 ? 'checked' : '';
+
+    ?> <input type='checkbox' name='sticky_phone_button_settings[sticky_phone_button_shadow_inset]' <?php echo $shadow_inset; ?>>
+    <p class="description">Enable inset (inner) shadow effect instead of outer shadow.</p>
     <?php
 }
 
@@ -907,6 +1292,21 @@ function sticky_phone_button_css()
     $options = sticky_phone_button_get_settings();
     $icon_color = isset($options['sticky_phone_button_icon_color']) ? $options['sticky_phone_button_icon_color'] : '#ffffff';
     $background_color = isset($options['sticky_phone_button_background_color']) ? $options['sticky_phone_button_background_color'] : '#000000';
+    
+    // Nowe opcje border i border-radius
+    $border_radius = isset($options['sticky_phone_button_border_radius']) ? $options['sticky_phone_button_border_radius'] : '50px';
+    $border_width = isset($options['sticky_phone_button_border_width']) ? $options['sticky_phone_button_border_width'] : '0px';
+    $border_style = isset($options['sticky_phone_button_border_style']) ? $options['sticky_phone_button_border_style'] : 'solid';
+    $border_color = isset($options['sticky_phone_button_border_color']) ? $options['sticky_phone_button_border_color'] : '#000000';
+    
+    // Nowe opcje shadow
+    $shadow_enabled = isset($options['sticky_phone_button_shadow_enabled']) ? $options['sticky_phone_button_shadow_enabled'] : 1;
+    $shadow_offset_x = isset($options['sticky_phone_button_shadow_offset_x']) ? $options['sticky_phone_button_shadow_offset_x'] : '0px';
+    $shadow_offset_y = isset($options['sticky_phone_button_shadow_offset_y']) ? $options['sticky_phone_button_shadow_offset_y'] : '0px';
+    $shadow_blur = isset($options['sticky_phone_button_shadow_blur']) ? $options['sticky_phone_button_shadow_blur'] : '10px';
+    $shadow_spread = isset($options['sticky_phone_button_shadow_spread']) ? $options['sticky_phone_button_shadow_spread'] : '0px';
+    $shadow_color = isset($options['sticky_phone_button_shadow_color']) ? $options['sticky_phone_button_shadow_color'] : 'rgba(0, 0, 0, 0.5)';
+    $shadow_inset = isset($options['sticky_phone_button_shadow_inset']) ? $options['sticky_phone_button_shadow_inset'] : 0;
 
     ?> <style type="text/css">
         /* Style dla Material Symbols */
@@ -920,7 +1320,8 @@ function sticky_phone_button_css()
         .sticky-phone-button {
             position: relative; /* Zmiana z fixed na relative */
             background-color: <?php echo esc_attr($background_color); ?>;
-            border-radius: 50px;
+            border-radius: <?php echo esc_attr($border_radius); ?>;
+            border: <?php echo esc_attr($border_width); ?> <?php echo esc_attr($border_style); ?> <?php echo esc_attr($border_color); ?>;
             padding: 10px 20px !important;
             display: flex !important;
             align-items: center;
@@ -928,7 +1329,11 @@ function sticky_phone_button_css()
             flex-direction: row;
             z-index: 9909;
             text-decoration: none;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+            <?php if ($shadow_enabled): ?>
+            box-shadow: <?php echo $shadow_inset ? 'inset ' : ''; ?><?php echo esc_attr($shadow_offset_x); ?> <?php echo esc_attr($shadow_offset_y); ?> <?php echo esc_attr($shadow_blur); ?> <?php echo esc_attr($shadow_spread); ?> <?php echo esc_attr($shadow_color); ?>;
+            <?php else: ?>
+            box-shadow: none;
+            <?php endif; ?>
             opacity: 0; /* Początkowo przycisk jest niewidoczny */
             transition: opacity 0.3s ease; /* Dodajemy płynne przejście */
         }
@@ -1124,6 +1529,87 @@ function sticky_phone_button_sanitize_settings($settings)
         $settings['sticky_phone_button_background_color'] = sanitize_hex_color($settings['sticky_phone_button_background_color']);
     }
 
+    // Sanitize URL include rules
+    if (isset($settings['sticky_phone_button_url_include'])) {
+        $settings['sticky_phone_button_url_include'] = sanitize_textarea_field($settings['sticky_phone_button_url_include']);
+    }
+
+    // Sanitize URL exclude rules
+    if (isset($settings['sticky_phone_button_url_exclude'])) {
+        $settings['sticky_phone_button_url_exclude'] = sanitize_textarea_field($settings['sticky_phone_button_url_exclude']);
+    }
+
+    // Sanitize border radius
+    if (isset($settings['sticky_phone_button_border_radius'])) {
+        $settings['sticky_phone_button_border_radius'] = sanitize_text_field($settings['sticky_phone_button_border_radius']);
+    }
+
+    // Sanitize border width
+    if (isset($settings['sticky_phone_button_border_width'])) {
+        $settings['sticky_phone_button_border_width'] = sanitize_text_field($settings['sticky_phone_button_border_width']);
+    }
+
+    // Sanitize border style
+    if (isset($settings['sticky_phone_button_border_style'])) {
+        $allowed_styles = array('none', 'solid', 'dashed', 'dotted', 'double', 'groove', 'ridge', 'inset', 'outset');
+        if (in_array($settings['sticky_phone_button_border_style'], $allowed_styles)) {
+            $settings['sticky_phone_button_border_style'] = $settings['sticky_phone_button_border_style'];
+        } else {
+            $settings['sticky_phone_button_border_style'] = 'solid';  // Domyślna wartość
+        }
+    }
+
+    // Sanitize border color
+    if (isset($settings['sticky_phone_button_border_color'])) {
+        $settings['sticky_phone_button_border_color'] = sanitize_hex_color($settings['sticky_phone_button_border_color']);
+    }
+
+    // Sanitize shadow enabled
+    if (isset($settings['sticky_phone_button_shadow_enabled'])) {
+        $settings['sticky_phone_button_shadow_enabled'] = 1; // Checkbox value
+    } else {
+        $settings['sticky_phone_button_shadow_enabled'] = 0;
+    }
+
+    // Sanitize shadow offset X
+    if (isset($settings['sticky_phone_button_shadow_offset_x'])) {
+        $settings['sticky_phone_button_shadow_offset_x'] = sanitize_text_field($settings['sticky_phone_button_shadow_offset_x']);
+    }
+
+    // Sanitize shadow offset Y
+    if (isset($settings['sticky_phone_button_shadow_offset_y'])) {
+        $settings['sticky_phone_button_shadow_offset_y'] = sanitize_text_field($settings['sticky_phone_button_shadow_offset_y']);
+    }
+
+    // Sanitize shadow blur
+    if (isset($settings['sticky_phone_button_shadow_blur'])) {
+        $settings['sticky_phone_button_shadow_blur'] = sanitize_text_field($settings['sticky_phone_button_shadow_blur']);
+    }
+
+    // Sanitize shadow spread
+    if (isset($settings['sticky_phone_button_shadow_spread'])) {
+        $settings['sticky_phone_button_shadow_spread'] = sanitize_text_field($settings['sticky_phone_button_shadow_spread']);
+    }
+
+    // Sanitize shadow color
+    if (isset($settings['sticky_phone_button_shadow_color'])) {
+        $settings['sticky_phone_button_shadow_color'] = sanitize_text_field($settings['sticky_phone_button_shadow_color']);
+    }
+
+    // Sanitize shadow inset
+    if (isset($settings['sticky_phone_button_shadow_inset'])) {
+        $settings['sticky_phone_button_shadow_inset'] = 1; // Checkbox value
+    } else {
+        $settings['sticky_phone_button_shadow_inset'] = 0;
+    }
+
+    // Sanitize enable debug
+    if (isset($settings['sticky_phone_button_enable_debug'])) {
+        $settings['sticky_phone_button_enable_debug'] = 1; // Checkbox value
+    } else {
+        $settings['sticky_phone_button_enable_debug'] = 0;
+    }
+
     // Wymuś odświeżenie cache'u opcji
     wp_cache_delete('sticky_phone_button_settings', 'options');
 
@@ -1188,6 +1674,66 @@ function sticky_phone_button_get_settings()
 
     if (empty($settings['sticky_phone_button_background_color'])) {
         $settings['sticky_phone_button_background_color'] = '#10941f';
+    }
+
+    // Ustaw domyślne wartości dla filtrowania URL-i
+    if (!isset($settings['sticky_phone_button_url_include'])) {
+        $settings['sticky_phone_button_url_include'] = '';
+    }
+
+    if (!isset($settings['sticky_phone_button_url_exclude'])) {
+        $settings['sticky_phone_button_url_exclude'] = '';
+    }
+
+    // Ustaw domyślne wartości dla border i border-radius
+    if (!isset($settings['sticky_phone_button_border_radius'])) {
+        $settings['sticky_phone_button_border_radius'] = '50px';
+    }
+
+    if (!isset($settings['sticky_phone_button_border_width'])) {
+        $settings['sticky_phone_button_border_width'] = '0px';
+    }
+
+    if (!isset($settings['sticky_phone_button_border_style'])) {
+        $settings['sticky_phone_button_border_style'] = 'solid';
+    }
+
+    if (!isset($settings['sticky_phone_button_border_color'])) {
+        $settings['sticky_phone_button_border_color'] = '#000000';
+    }
+
+    // Ustaw domyślne wartości dla shadow
+    if (!isset($settings['sticky_phone_button_shadow_enabled'])) {
+        $settings['sticky_phone_button_shadow_enabled'] = 1; // Domyślnie włączony
+    }
+
+    if (!isset($settings['sticky_phone_button_shadow_offset_x'])) {
+        $settings['sticky_phone_button_shadow_offset_x'] = '0px';
+    }
+
+    if (!isset($settings['sticky_phone_button_shadow_offset_y'])) {
+        $settings['sticky_phone_button_shadow_offset_y'] = '0px';
+    }
+
+    if (!isset($settings['sticky_phone_button_shadow_blur'])) {
+        $settings['sticky_phone_button_shadow_blur'] = '10px';
+    }
+
+    if (!isset($settings['sticky_phone_button_shadow_spread'])) {
+        $settings['sticky_phone_button_shadow_spread'] = '0px';
+    }
+
+    if (!isset($settings['sticky_phone_button_shadow_color'])) {
+        $settings['sticky_phone_button_shadow_color'] = 'rgba(0, 0, 0, 0.5)';
+    }
+
+    if (!isset($settings['sticky_phone_button_shadow_inset'])) {
+        $settings['sticky_phone_button_shadow_inset'] = 0; // Domyślnie outer shadow
+    }
+
+    // Ustaw domyślne wartości dla enable debug
+    if (!isset($settings['sticky_phone_button_enable_debug'])) {
+        $settings['sticky_phone_button_enable_debug'] = 0; // Domyślnie wyłączony
     }
 
     return $settings;
