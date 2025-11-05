@@ -4,6 +4,14 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
 
 ![Plugin Preview](view.png)
 
+## Plugin Previews
+
+### Different Button Styles
+![Button Style Example 1](podglad2.png)
+
+### Advanced Customization Options
+![Button Style Example 2](podglad32.png)
+
 ## Features
 
 ### Comprehensive Display Settings
@@ -174,7 +182,13 @@ The button is rendered with the following HTML structure:
 
 ## Version History
 
-### 1.4 (Current)
+### 1.5 (Current)
+- **Stable Release**: All features from version 1.4 tested and verified
+- **Documentation Update**: Enhanced documentation with visual previews
+- **Performance Optimization**: Improved CSS generation and caching
+- **Code Quality**: Refined implementation of URL filtering, border controls, and shadow effects
+
+### 1.4
 - **URL Filtering System**: Advanced whitelist/blacklist functionality for URL-based visibility control
 - **Border & Shape Control**: Complete border customization (radius, width, style, color) with 9 border styles
 - **Shadow Effects**: Full box-shadow management (enable/disable, position, blur, spread, color, inset option)
