@@ -167,6 +167,9 @@ Real-world examples:
 Medical/Healthcare:
 <b>Schedule Appointment</b><br><small>Same-day available</small>
 
+Colorectal Surgery/Oncology:
+<strong>Expert Consultation</strong><br><small>Specialized in <em>colorectal cancer</em></small>
+
 Restaurant/Food:
 Order Now <small>Delivery in <em>30 min</em></small>
 
