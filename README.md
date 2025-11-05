@@ -2,17 +2,17 @@
 
 A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) button on all devices, allowing visitors to instantly connect or take action. The button can be fully customized in terms of position, display times, colors, and target actions.
 
-![Plugin Preview](view.png)
+
 
 ## Plugin Previews
 
-### Different Button Styles
+### Want to Schedule an Appointment?
 ![Button Style Example 1](podglad2.png)
 
-### Advanced Customization Options
+### Have a Question? Call Us
 ![Button Style Example 2](podglad3.png)
 
-### Download Coupon Example
+### Download Coupon
 ![Button Style Example 3](podglad4.png)
 
 ## Features
@@ -63,6 +63,8 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
 - **High Performance**: Optimized JavaScript for minimal impact on page load speed
 - **Mobile Optimization**: Responsive design ensures proper display on all device sizes
 - **Time-Based Visibility**: Automatically shows/hides the button based on configured time ranges
+
+![Settings preview](view.png)
 
 ## Installation
 
@@ -172,7 +174,7 @@ The button is rendered with the following HTML structure:
         <span class="material-symbols-outlined">icon_name</span>
         <span class="sticky-phone-button-text">CTA Text</span>
     </a>
-</div>
+</div>s
 ```
 
 ## Browser Compatibility
