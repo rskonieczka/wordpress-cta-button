@@ -2,7 +2,36 @@
 
 A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) button on all devices, allowing visitors to instantly connect or take action. The button can be fully customized in terms of position, display times, colors, and target actions.
 
+## Table of Contents
 
+- [Plugin Previews](#plugin-previews)
+- [Features](#features)
+  - [Comprehensive Display Settings](#comprehensive-display-settings)
+  - [Flexible Action Configuration](#flexible-action-configuration)
+  - [Extensive Customization](#extensive-customization)
+  - [Advanced Features](#advanced-features)
+- [Installation](#installation)
+  - [Method 1: WordPress Dashboard](#method-1-wordpress-dashboard)
+  - [Method 2: Manual Installation](#method-2-manual-installation)
+  - [Requirements](#requirements)
+- [Configuration](#configuration)
+  - [Basic Setup](#basic-setup)
+  - [Advanced Options](#advanced-options)
+  - [URL Filtering Examples](#url-filtering-examples)
+  - [Border & Shadow Examples](#border--shadow-examples)
+  - [CTA Text Formatting Examples](#cta-text-formatting-examples)
+- [Testing](#testing)
+  - [Debug Examples](#debug-examples)
+- [Technical Details](#technical-details)
+  - [REST API](#rest-api)
+  - [Ajax Endpoint](#ajax-endpoint)
+  - [Custom HTML Structure](#custom-html-structure)
+- [Browser Compatibility](#browser-compatibility)
+- [Version History](#version-history)
+- [License](#license)
+  - [What GPL v2 means](#what-gpl-v2-means)
+  - [Paid License with Invoice](#paid-license-with-invoice)
+- [Credits](#credits)
 
 ## Plugin Previews
 
@@ -14,6 +43,9 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
 
 ### Download Coupon
 ![Button Style Example 3](podglad4.png)
+
+### See How to Book NFZ Appointment
+![Button Style Example 4](podglad5.png)
 
 ## Features
 
