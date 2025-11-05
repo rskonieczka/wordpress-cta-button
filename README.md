@@ -44,6 +44,11 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
   - Text color
   - Font weight
   - Custom CSS classes and IDs
+- **CTA Text Formatting**:
+  - Support for HTML tags in CTA text
+  - Small text using `<small>` tag
+  - Italic text using `<em>` or `<i>` tags
+  - Combine multiple formatting options
 - **Border & Shape Control**:
   - Border radius (from square to fully circular buttons)
   - Border width, style, and color
@@ -132,6 +137,104 @@ Shadow Effects:
 0px 2px 10px rgba(0,0,0,0.3) - subtle drop shadow
 2px 2px 5px rgba(0,0,0,0.5) - offset shadow
 inset 0px 2px 4px rgba(0,0,0,0.2) - inner shadow
+```
+
+### CTA Text Formatting Examples
+```
+Basic text:
+Call Now
+
+Bold text:
+<b>Call Now</b> or <strong>Call Now</strong>
+
+Small text:
+Call Now <small>Available 24/7</small>
+
+Italic text:
+<em>Quick</em> Response or <i>Quick</i> Response
+
+Line breaks:
+Call Now<br>24/7 Support
+
+Combined formatting:
+<b>Call Now</b> <small><em>Open Mon-Fri</em></small>
+
+Multiple formatting options:
+Contact Us <small>Get <em>instant</em> support</small>
+
+Real-world examples:
+
+Medical/Healthcare:
+<b>Schedule Appointment</b><br><small>Same-day available</small>
+
+Restaurant/Food:
+Order Now <small>Delivery in <em>30 min</em></small>
+
+E-commerce:
+<strong>Shop Now</strong><br><small>Free shipping over $50</small>
+
+Service Business:
+<b>Get Quote</b> <small>Response in <i>2 hours</i></small>
+
+Emergency Services:
+<strong>CALL NOW</strong><br><small><em>24/7 Emergency Line</em></small>
+
+Real Estate:
+Schedule Viewing<br><small>Virtual tours <i>available</i></small>
+
+Consulting:
+<b>Book Consultation</b><br><small>First 30 min <em>free</em></small>
+
+Salon/Beauty:
+Book Now <small>Online booking <b>10% OFF</b></small>
+
+Fitness/Gym:
+Start Today<br><small><b>First week FREE</b></small>
+
+Legal Services:
+<strong>Free Consultation</strong><br><small>Call <em>anytime</em></small>
+
+Hotel/Accommodation:
+<b>Book Your Stay</b><br><small>Best price <em>guarantee</em></small>
+
+Automotive/Mechanic:
+<strong>Schedule Service</strong><br><small>Same-day repairs <i>available</i></small>
+
+Education/Tutoring:
+Start Learning<br><small><b>First class FREE</b></small>
+
+Plumbing/HVAC:
+<b>EMERGENCY SERVICE</b><br><small><em>Available 24/7</em></small>
+
+Photography:
+<b>Book Session</b><br><small>Wedding packages from <i>$999</i></small>
+
+Pet Services:
+Grooming Appointment<br><small>Walk-ins <b>welcome</b></small>
+
+Insurance:
+<strong>Get Quote</strong><br><small>Compare rates in <em>minutes</em></small>
+
+Moving Services:
+<b>Free Estimate</b><br><small>Local & <i>long-distance</i></small>
+
+Web Design:
+<strong>Start Your Project</strong><br><small>Free consultation & <em>quote</em></small>
+
+Cleaning Services:
+<b>Book Cleaning</b><br><small>First-time customers <b>20% OFF</b></small>
+
+Taxi/Transportation:
+<strong>Order Ride</strong><br><small>Pickup in <em>5-10 min</em></small>
+
+Dental Practice:
+Schedule Checkup<br><small><b>New patients</b> welcome</small>
+
+Event Planning:
+<b>Plan Your Event</b><br><small>Weddings, parties & <em>corporate</em></small>
+
+Tech Support:
+<strong>Get Help Now</strong><br><small>Remote support <i>available</i></small>
 ```
 
 ## Testing

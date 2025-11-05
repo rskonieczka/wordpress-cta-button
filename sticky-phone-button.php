@@ -551,7 +551,7 @@ function sticky_phone_button_cta_text_render()
     $cta_text = isset($options['sticky_phone_button_cta_text']) ? $options['sticky_phone_button_cta_text'] : '';
 
     ?> <textarea name='sticky_phone_button_settings[sticky_phone_button_cta_text]' rows='2' cols='40'><?php echo esc_textarea($cta_text); ?></textarea>
-    <p class="description">Text to display on the button. Leave blank to show only the icon. <br/>&bull; &lt;b&gt; or &lt;strong&gt; to bold selected text, e.g. &lt;b&gt;Call&lt;/b&gt; now! <br/>&bull; You can enter text in multiple lines using  &lt;br/&gt; to manually add a new line</p> <?php
+    <p class="description">Text to display on the button. Leave blank to show only the icon. <br/>&bull; &lt;b&gt; or &lt;strong&gt; to bold selected text, e.g. &lt;b&gt;Call&lt;/b&gt; now! <br/>&bull; &lt;small&gt; for smaller text, e.g. Call Now &lt;small&gt;24/7&lt;/small&gt; <br/>&bull; &lt;em&gt; or &lt;i&gt; for italic text, e.g. &lt;em&gt;Quick&lt;/em&gt; Response <br/>&bull; You can enter text in multiple lines using  &lt;br/&gt; to manually add a new line</p> <?php
 }
 
 /**
@@ -1500,11 +1500,14 @@ function sticky_phone_button_sanitize_settings($settings)
 
     // Sanitize CTA text
     if (isset($settings['sticky_phone_button_cta_text'])) {
-        // Używamy wp_kses, aby umożliwić tagi <b>, <strong> i <br>
+        // Używamy wp_kses, aby umożliwić tagi <b>, <strong>, <br>, <small>, <em> i <i>
         $allowed_html = array(
             'b' => array(),
             'strong' => array(),
             'br' => array(),
+            'small' => array(),
+            'em' => array(),
+            'i' => array(),
         );
         $settings['sticky_phone_button_cta_text'] = wp_kses(stripslashes($settings['sticky_phone_button_cta_text']), $allowed_html);
     }
