@@ -10,7 +10,10 @@ A feature-rich WordPress plugin that displays a sticky Call-to-Action (CTA) butt
 ![Button Style Example 1](podglad2.png)
 
 ### Advanced Customization Options
-![Button Style Example 2](podglad32.png)
+![Button Style Example 2](podglad3.png)
+
+### Download Coupon Example
+![Button Style Example 3](podglad4.png)
 
 ## Features
 
