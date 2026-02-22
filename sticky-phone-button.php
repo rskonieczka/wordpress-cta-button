@@ -443,6 +443,15 @@ function sticky_phone_button_settings_init()
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
     );
+
+    // Add a field for scroll trigger value
+    add_settings_field(
+        'sticky_phone_button_scroll_trigger_value',
+        __('Show after scroll', 'sticky-phone-button'),
+        'sticky_phone_button_scroll_trigger_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_settings_section'
+    );
 }
 
 add_action('admin_init', 'sticky_phone_button_settings_init');
@@ -1194,6 +1203,38 @@ function sticky_phone_button_shadow_inset_render()
 }
 
 /**
+ * Render input fields for scroll trigger (value + unit).
+ * This field allows users to show the button only after scrolling a defined distance.
+ * @return void
+ */
+function sticky_phone_button_scroll_trigger_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $value = isset($options['sticky_phone_button_scroll_trigger_value']) ? $options['sticky_phone_button_scroll_trigger_value'] : '0';
+    $unit  = isset($options['sticky_phone_button_scroll_trigger_unit'])  ? $options['sticky_phone_button_scroll_trigger_unit']  : '%';
+
+    ?>
+    <input type='number' min='0' max='10000'
+        name='sticky_phone_button_settings[sticky_phone_button_scroll_trigger_value]'
+        value='<?php echo esc_attr($value); ?>'
+        placeholder='0'
+        style='width:80px;'>
+    <select name='sticky_phone_button_settings[sticky_phone_button_scroll_trigger_unit]'>
+        <option value='%'  <?php selected($unit, '%');  ?>>%</option>
+        <option value='px' <?php selected($unit, 'px'); ?>>px</option>
+    </select>
+    <p class="description">
+        Show button only after scrolling past this point. Examples:<br/>
+        • <code>0 %</code> - disabled, button visible immediately<br/>
+        • <code>50 %</code> - show after scrolling 50% of page height<br/>
+        • <code>100 %</code> - show only at the very bottom<br/>
+        • <code>300 px</code> - show after scrolling 300px from the top<br/>
+        Button hides again when scrolling back above the threshold.
+    </p>
+    <?php
+}
+
+/**
  * Enqueue Material Symbols
  */
 function sticky_phone_button_enqueue_material_symbols()
@@ -1606,6 +1647,25 @@ function sticky_phone_button_sanitize_settings($settings)
         $settings['sticky_phone_button_shadow_inset'] = 0;
     }
 
+    // Sanitize scroll trigger value
+    if (isset($settings['sticky_phone_button_scroll_trigger_value'])) {
+        $settings['sticky_phone_button_scroll_trigger_value'] = absint($settings['sticky_phone_button_scroll_trigger_value']);
+    } else {
+        $settings['sticky_phone_button_scroll_trigger_value'] = 0;
+    }
+
+    // Sanitize scroll trigger unit
+    if (isset($settings['sticky_phone_button_scroll_trigger_unit'])) {
+        $allowed_units = array('%', 'px');
+        if (in_array($settings['sticky_phone_button_scroll_trigger_unit'], $allowed_units)) {
+            $settings['sticky_phone_button_scroll_trigger_unit'] = $settings['sticky_phone_button_scroll_trigger_unit'];
+        } else {
+            $settings['sticky_phone_button_scroll_trigger_unit'] = '%';
+        }
+    } else {
+        $settings['sticky_phone_button_scroll_trigger_unit'] = '%';
+    }
+
     // Sanitize enable debug
     if (isset($settings['sticky_phone_button_enable_debug'])) {
         $settings['sticky_phone_button_enable_debug'] = 1; // Checkbox value
@@ -1875,20 +1935,20 @@ function sticky_phone_button_html()
     $href = '';
     switch ($link_type) {
         case 'tel':
-            $href = 'tel:' . esc_attr($link_value);
+            $href = 'tel:' . str_replace('tel:', '', esc_attr($link_value));
             break;
         case 'mailto':
-            $href = 'mailto:' . esc_attr($link_value);
+            $href = 'mailto:' . str_replace('mailto:', '', esc_attr($link_value));
             break;
         case 'sms':
-            $href = 'sms:' . esc_attr($link_value);
+            $href = 'sms:' . str_replace('sms:', '', esc_attr($link_value));
             break;
         case 'url':
-            // Sprawdź, czy adres URL ma prefiks protokołu
-            $href = esc_attr($link_value);
+            $sanitized_url = esc_url($link_value);
+            $href = !empty($sanitized_url) ? $sanitized_url : esc_attr($link_value);
             break;
         default:
-            $href = esc_attr($link_type) . ':' . esc_attr($link_value);
+            $href = esc_attr($link_type) . ':' . str_replace(esc_attr($link_type) . ':', '', esc_attr($link_value));
     }
 
     // Zmień atrybuty aby ukryć przycisk domyślnie, JS go pokaże jeśli trzeba
