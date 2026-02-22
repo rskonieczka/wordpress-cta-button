@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const value = parseInt(settings.sticky_phone_button_scroll_trigger_value, 10);
         const unit = settings.sticky_phone_button_scroll_trigger_unit || '%';
 
-        if (!value || value <= 0) {
+        if (isNaN(value) || value <= 0) {
             return true; // Brak progu - nie blokuj wyświetlania
         }
 
@@ -360,6 +360,140 @@ document.addEventListener('DOMContentLoaded', function () {
         return hours * 60 + minutes;
     }
 
+    /**
+     * Sprawdza, czy bieżący dzień i godzina pasują do danego zestawu dni (display_days lub alt_display_days).
+     * @param {Object} settings - ustawienia wtyczki
+     * @param {string} daysKey - 'display_days' lub 'alt_display_days'
+     * @returns {boolean}
+     */
+    function dayHoursMatch(settings, daysKey) {
+        const daysConfig = settings && settings[daysKey];
+        if (!daysConfig || typeof daysConfig !== 'object') {
+            return false;
+        }
+        const today = new Date();
+        const currentDayIndex = today.getDay();
+        const currentDayEn = dayIndexToName[currentDayIndex];
+        const currentDayPl = dayIndexToNamePL[currentDayIndex];
+        let daySettings = daysConfig[currentDayEn] || daysConfig[currentDayPl];
+        if (!daySettings || !daySettings.enabled) {
+            return false;
+        }
+        if (daySettings.hours && typeof daySettings.hours === 'string' && daySettings.hours.indexOf('-') !== -1) {
+            const currentTime = today.getHours() * 60 + today.getMinutes();
+            const timeParts = daySettings.hours.split('-');
+            const startTime = parseTimeString(timeParts[0].trim());
+            const endTime = parseTimeString(timeParts[1].trim());
+            if (currentTime < startTime || currentTime > endTime) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Zwraca aktywny profil: 'main' | 'alt' lub null (ukryj przycisk).
+     * Alt ma priorytet gdy pasuje dzień+godziny.
+     */
+    function getVisibleProfile(settings) {
+        if (!settings || typeof settings !== 'object') {
+            return null;
+        }
+        if (window.location.href.includes('alwaysShowCTA=1') || window.location.href.includes('forceCTA=1')) {
+            return (settings.sticky_phone_button_alt_enabled === 1 && dayHoursMatch(settings, 'alt_display_days')) ? 'alt' : 'main';
+        }
+        const urlExclude = (settings.sticky_phone_button_url_exclude || '').trim();
+        if (urlExclude) {
+            const excludeRules = urlExclude.split('\n').map(r => r.trim()).filter(r => r !== '');
+            const currentUrl = window.location.href;
+            for (const rule of excludeRules) {
+                if (currentUrl.includes(rule) && !window.location.href.includes('debug=1') && !window.location.href.includes('forceCTA=1') && !window.location.href.includes('show=1')) {
+                    return null;
+                }
+            }
+        }
+        const urlInclude = (settings.sticky_phone_button_url_include || '').trim();
+        if (urlInclude) {
+            const includeRules = urlInclude.split('\n').map(r => r.trim()).filter(r => r !== '');
+            let urlMatches = false;
+            const currentUrl = window.location.href;
+            for (const rule of includeRules) {
+                if (currentUrl.includes(rule)) {
+                    urlMatches = true;
+                    break;
+                }
+            }
+            if (!urlMatches && !window.location.href.includes('debug=1') && !window.location.href.includes('forceCTA=1') && !window.location.href.includes('show=1')) {
+                return null;
+            }
+        }
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const displayDevice = settings.sticky_phone_button_display_device || settings.display_device || 'both';
+        if (displayDevice === 'phones' || displayDevice === 'mobile') {
+            if (!isMobile) return null;
+        } else if (displayDevice === 'desktops' || displayDevice === 'desktop') {
+            if (isMobile) return null;
+        }
+        const altMatch = settings.sticky_phone_button_alt_enabled === 1 && dayHoursMatch(settings, 'alt_display_days');
+        const hasMainDays = settings.display_days && typeof settings.display_days === 'object';
+        const mainMatch = hasMainDays ? dayHoursMatch(settings, 'display_days') : true;
+        if (!mainMatch && !altMatch) {
+            return null;
+        }
+        if (!checkScrollTrigger(settings)) {
+            return null;
+        }
+        return altMatch ? 'alt' : 'main';
+    }
+
+    /**
+     * Buduje href z link_type i link_value.
+     */
+    function buildHref(linkType, linkValue) {
+        if (!linkValue) return '#';
+        switch (linkType) {
+            case 'tel':
+                return 'tel:' + String(linkValue).replace(/^tel:/, '');
+            case 'mailto':
+                return 'mailto:' + String(linkValue).replace(/^mailto:/, '');
+            case 'sms':
+                return 'sms:' + String(linkValue).replace(/^sms:/, '');
+            case 'url': {
+                const v = String(linkValue).trim();
+                if (/^https?:\/\//i.test(v)) return v;
+                if (/^\/\//.test(v)) return 'https:' + v;
+                if (v && !/^\s*javascript:/i.test(v) && !/^\s*data:/i.test(v)) return 'https://' + v;
+                return '#';
+            }
+            default:
+                return (linkType || '') + ':' + String(linkValue);
+        }
+    }
+
+    /**
+     * Ustawia na przycisku href, target, tekst CTA i ikonę według wybranego profilu.
+     */
+    function applyProfile(button, profile, settings) {
+        if (!button || !settings) return;
+        const isAlt = profile === 'alt';
+        const linkType = isAlt ? (settings.sticky_phone_button_alt_link_type || 'mailto') : (settings.sticky_phone_button_link_type || 'tel');
+        const linkValue = isAlt ? (settings.sticky_phone_button_alt_link_value || '') : (settings.sticky_phone_button_link_value || '');
+        const target = isAlt ? (settings.sticky_phone_button_alt_target || '_self') : (settings.sticky_phone_button_target || '_self');
+        const ctaText = isAlt ? (settings.sticky_phone_button_alt_cta_text || '') : (settings.sticky_phone_button_cta_text || '');
+        const iconName = isAlt ? (settings.sticky_phone_button_alt_icon_name || 'mail') : (settings.sticky_phone_button_icon_name || 'call');
+        button.href = buildHref(linkType, linkValue);
+        button.target = target;
+        const ctaEl = button.querySelector('.cta-text');
+        if (ctaEl) {
+            ctaEl.innerHTML = ctaText || '';
+        }
+        const iconEl = button.querySelector('.button-icon');
+        if (iconEl) {
+            iconEl.innerHTML = '<span class="material-symbols-rounded" style="font-size:24px">' + (iconName ? String(iconName).replace(/[<>"']/g, '') : 'call') + '</span>';
+        }
+        log('Zastosowano profil:', profile);
+    }
+
     // Funkcja do znajdowania przycisku na stronie
     function findPhoneButton(settings) {
         if (!settings) {
@@ -542,28 +676,38 @@ document.addEventListener('DOMContentLoaded', function () {
         // Sprawdź czy przycisk ma klasę 'force-display' - jeśli tak, zawsze pokaż
         if (button.classList.contains('force-display')) {
             warn('Przycisk ma klasę force-display - wymuszam pokazanie');
+            const profile = getVisibleProfile(stickyPhoneButtonData.settings) || 'main';
             showOrHideButton(true);
+            applyProfile(button, profile, stickyPhoneButtonData.settings);
+            updateButtonClasses(button, stickyPhoneButtonData.settings);
             return;
         }
 
         // Sprawdź czy jest ustawiona flaga force_display w ustawieniach
         if (stickyPhoneButtonData.settings && stickyPhoneButtonData.settings.force_display) {
             warn('Ustawienia mają flagę force_display - wymuszam pokazanie');
+            const profile = (stickyPhoneButtonData.settings.sticky_phone_button_alt_enabled === 1 && dayHoursMatch(stickyPhoneButtonData.settings, 'alt_display_days')) ? 'alt' : 'main';
             showOrHideButton(true);
+            applyProfile(button, profile, stickyPhoneButtonData.settings);
+            updateButtonClasses(button, stickyPhoneButtonData.settings);
             return;
         }
 
-        // Standardowe sprawdzenie widoczności
-        const isVisible = checkButtonVisibility(stickyPhoneButtonData.settings);
-        log('Czy przycisk powinien być widoczny:', isVisible);
+        // Wybór profilu (main / alt) lub ukrycie przycisku
+        const profile = getVisibleProfile(stickyPhoneButtonData.settings);
+        log('Aktywny profil przycisku:', profile);
 
-        // Pokaż lub ukryj przycisk
-        showOrHideButton(isVisible);
+        if (profile === null) {
+            showOrHideButton(false);
+        } else {
+            showOrHideButton(true);
+            applyProfile(button, profile, stickyPhoneButtonData.settings);
+        }
 
-        // Aktualizuj klasy i style przycisku - po sprawdzeniu widoczności
+        // Aktualizuj klasy i style przycisku
         updateButtonClasses(button, stickyPhoneButtonData.settings);
 
-        log('Widoczność przycisku zaktualizowana:', isVisible);
+        log('Widoczność przycisku zaktualizowana, profil:', profile);
     }
 
     // Nowa funkcja do pobierania świeżych ustawień z REST API
@@ -804,12 +948,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 500);
     });
 
-    // Scroll listener z throttle - aktualizuje widoczność przycisku przy przewijaniu
-    let scrollThrottleTimer = null;
+    // Scroll listener z debounce - aktualizuje widoczność 100ms po zakończeniu przewijania
+    // (reset timera przy każdym scrollu, żeby przy powrocie np. z 70% do 30% przycisk znikał po zejściu poniżej progu)
+    let scrollDebounceTimer = null;
     window.addEventListener('scroll', function () {
-        if (scrollThrottleTimer) return;
-        scrollThrottleTimer = setTimeout(function () {
-            scrollThrottleTimer = null;
+        if (scrollDebounceTimer) clearTimeout(scrollDebounceTimer);
+        scrollDebounceTimer = setTimeout(function () {
+            scrollDebounceTimer = null;
             if (pageFullyLoaded) {
                 log('Scroll event - aktualizuję widoczność przycisku');
                 updateButtonVisibility();

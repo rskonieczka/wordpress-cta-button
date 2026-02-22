@@ -64,7 +64,7 @@ add_action('wp_enqueue_scripts', 'sticky_phone_button_enqueue_scripts');
 function sticky_phone_button_admin_scripts()
 {
     $screen = get_current_screen();
-    if ($screen && $screen->id === 'toplevel_page_sticky-phone-button') {
+    if ($screen && $screen->id === 'settings_page_sticky-phone-button') {
         wp_enqueue_script('sticky-phone-button-admin-script', plugins_url('admin-script.js', __FILE__), array('jquery'), '1.0.0', true);
     }
 }
@@ -451,6 +451,72 @@ function sticky_phone_button_settings_init()
         'sticky_phone_button_scroll_trigger_render',
         'stickyPhoneButtonSettings',
         'sticky_phone_button_settings_section'
+    );
+
+    // Section: Alternate button (e.g. weekend)
+    add_settings_section(
+        'sticky_phone_button_alt_section',
+        __('Alternate button (e.g. weekend)', 'sticky-phone-button'),
+        function () {
+            echo '<p class="description">' . esc_html__('Show a different CTA (e.g. email or form) on selected days (e.g. Saturday, Sunday). When both profiles match, the alternate profile takes priority.', 'sticky-phone-button') . '</p>';
+        },
+        'stickyPhoneButtonSettings'
+    );
+
+    add_settings_field(
+        'sticky_phone_button_alt_enabled',
+        __('Enable alternate button', 'sticky-phone-button'),
+        'sticky_phone_button_alt_enabled_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_alt_section'
+    );
+
+    add_settings_field(
+        'sticky_phone_button_alt_display_days',
+        __('Display days and hours (alternate)', 'sticky-phone-button'),
+        'sticky_phone_button_alt_display_days_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_alt_section'
+    );
+
+    add_settings_field(
+        'sticky_phone_button_alt_link_type',
+        __('Link type (alternate)', 'sticky-phone-button'),
+        'sticky_phone_button_alt_link_type_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_alt_section'
+    );
+
+    add_settings_field(
+        'sticky_phone_button_alt_link_value',
+        __('Link value (alternate)', 'sticky-phone-button'),
+        'sticky_phone_button_alt_link_value_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_alt_section'
+    );
+
+    add_settings_field(
+        'sticky_phone_button_alt_target',
+        __('Link target (alternate)', 'sticky-phone-button'),
+        'sticky_phone_button_alt_target_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_alt_section'
+    );
+
+    add_settings_field(
+        'sticky_phone_button_alt_cta_text',
+        __('CTA text (alternate)', 'sticky-phone-button'),
+        'sticky_phone_button_alt_cta_text_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_alt_section'
+    );
+
+    add_settings_field(
+        'sticky_phone_button_alt_icon_name',
+        __('Icon name (alternate)', 'sticky-phone-button'),
+        'sticky_phone_button_alt_icon_name_render',
+        'stickyPhoneButtonSettings',
+        'sticky_phone_button_alt_section'
     );
 }
 
@@ -1235,6 +1301,149 @@ function sticky_phone_button_scroll_trigger_render()
 }
 
 /**
+ * Alternate profile: enable checkbox
+ */
+function sticky_phone_button_alt_enabled_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $enabled = isset($options['sticky_phone_button_alt_enabled']) && (int) $options['sticky_phone_button_alt_enabled'] === 1 ? 'checked' : '';
+    ?> <input type='checkbox' name='sticky_phone_button_settings[sticky_phone_button_alt_enabled]' value='1' <?php echo $enabled; ?>>
+    <p class="description"><?php esc_html_e('When enabled, on the days/hours set below the button will show the alternate link and text (e.g. email or form) instead of the main one.', 'sticky-phone-button'); ?></p> <?php
+}
+
+/**
+ * Alternate profile: display days and hours
+ */
+function sticky_phone_button_alt_display_days_render()
+{
+    global $days_of_week, $days_of_week_pl;
+    $options = sticky_phone_button_get_settings();
+    $alt_days = isset($options['alt_display_days']) && is_array($options['alt_display_days']) ? $options['alt_display_days'] : array();
+
+    echo '<p><strong>' . esc_html__('Note:', 'sticky-phone-button') . '</strong> ' . esc_html__('Leave hours blank to show the alternate button all day on selected days.', 'sticky-phone-button') . '</p>';
+
+    foreach ($days_of_week as $day) {
+        $checked = isset($alt_days[$day]['enabled']) ? 'checked' : '';
+        $hours = isset($alt_days[$day]['hours']) ? $alt_days[$day]['hours'] : '';
+        $start_time = '';
+        $end_time = '';
+        if (!empty($hours) && strpos($hours, '-') !== false) {
+            list($start_time, $end_time) = explode('-', $hours);
+        }
+        ?>
+        <div class="time-range-row time-range-row-alt">
+            <label class="day-checkbox">
+                <input type='checkbox' name='sticky_phone_button_settings[alt_display_days][<?php echo esc_attr($day); ?>][enabled]' <?php echo $checked; ?>> <?php echo esc_html($days_of_week_pl[$day]); ?>
+            </label>
+            <div class="time-inputs">
+                <input type='time' class="time-start" value="<?php echo esc_attr($start_time); ?>" onchange="updateTimeRange(this)">
+                <span class="time-separator">-</span>
+                <input type='time' class="time-end" value="<?php echo esc_attr($end_time); ?>" onchange="updateTimeRange(this)">
+                <input type='hidden' name='sticky_phone_button_settings[alt_display_days][<?php echo esc_attr($day); ?>][hours]' class="time-range-value" value='<?php echo esc_attr($hours); ?>'>
+            </div>
+        </div>
+        <?php
+    }
+}
+
+/**
+ * Alternate profile: link type
+ */
+function sticky_phone_button_alt_link_type_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $link_type = isset($options['sticky_phone_button_alt_link_type']) ? $options['sticky_phone_button_alt_link_type'] : 'mailto';
+    ?> <select name='sticky_phone_button_settings[sticky_phone_button_alt_link_type]'>
+        <option value='tel' <?php selected($link_type, 'tel'); ?>><?php esc_html_e('Phone', 'sticky-phone-button'); ?></option>
+        <option value='mailto' <?php selected($link_type, 'mailto'); ?>><?php esc_html_e('Email', 'sticky-phone-button'); ?></option>
+        <option value='url' <?php selected($link_type, 'url'); ?>><?php esc_html_e('Website', 'sticky-phone-button'); ?></option>
+        <option value='sms' <?php selected($link_type, 'sms'); ?>><?php esc_html_e('SMS', 'sticky-phone-button'); ?></option>
+    </select>
+    <p class="description"><?php esc_html_e('Select the type of link for the alternate button.', 'sticky-phone-button'); ?></p> <?php
+}
+
+/**
+ * Alternate profile: link value
+ */
+function sticky_phone_button_alt_link_value_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $link_type = isset($options['sticky_phone_button_alt_link_type']) ? $options['sticky_phone_button_alt_link_type'] : 'mailto';
+    $link_value = isset($options['sticky_phone_button_alt_link_value']) ? $options['sticky_phone_button_alt_link_value'] : '';
+    ?> <input type='text' name='sticky_phone_button_settings[sticky_phone_button_alt_link_value]' value='<?php echo esc_attr($link_value); ?>'>
+    <p class="description alt-link-value-desc">
+    <?php
+    switch ($link_type) {
+        case 'tel':
+            echo esc_html__('Phone number, e.g. +48501501501', 'sticky-phone-button');
+            break;
+        case 'mailto':
+            echo esc_html__('Email address, e.g. kontakt@example.com?subject=Zapytanie', 'sticky-phone-button');
+            break;
+        case 'url':
+            echo esc_html__('Full website URL or form page, e.g. https://example.com/kontakt', 'sticky-phone-button');
+            break;
+        case 'sms':
+            echo esc_html__('Phone number for SMS', 'sticky-phone-button');
+            break;
+        default:
+            echo esc_html__('Link value depending on the selected type', 'sticky-phone-button');
+    }
+    ?>
+    </p> <?php
+}
+
+/**
+ * Alternate profile: target
+ */
+function sticky_phone_button_alt_target_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $target = isset($options['sticky_phone_button_alt_target']) ? $options['sticky_phone_button_alt_target'] : '_self';
+    ?> <select name='sticky_phone_button_settings[sticky_phone_button_alt_target]'>
+        <option value='_self' <?php selected($target, '_self'); ?>>_self</option>
+        <option value='_blank' <?php selected($target, '_blank'); ?>>_blank</option>
+        <option value='_parent' <?php selected($target, '_parent'); ?>>_parent</option>
+        <option value='_top' <?php selected($target, '_top'); ?>>_top</option>
+    </select>
+    <p class="description"><?php esc_html_e('Target attribute for the alternate link.', 'sticky-phone-button'); ?></p> <?php
+}
+
+/**
+ * Alternate profile: CTA text
+ */
+function sticky_phone_button_alt_cta_text_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $cta_text = isset($options['sticky_phone_button_alt_cta_text']) ? $options['sticky_phone_button_alt_cta_text'] : '';
+    ?> <textarea name='sticky_phone_button_settings[sticky_phone_button_alt_cta_text]' rows='2' cols='40'><?php echo esc_textarea($cta_text); ?></textarea>
+    <p class="description"><?php esc_html_e('Text for the alternate button (e.g. "Napisz do nas", "Wypełnij formularz"). Supports &lt;b&gt;, &lt;small&gt;, &lt;br/&gt;.', 'sticky-phone-button'); ?></p> <?php
+}
+
+/**
+ * Alternate profile: icon name
+ */
+function sticky_phone_button_alt_icon_name_render()
+{
+    $options = sticky_phone_button_get_settings();
+    $icon_name = isset($options['sticky_phone_button_alt_icon_name']) ? $options['sticky_phone_button_alt_icon_name'] : 'mail';
+    $popular_icons = array(
+        'call' => 'Phone',
+        'mail' => 'Email',
+        'chat' => 'Chat',
+        'edit_note' => 'Edit / Form',
+        'contact_page' => 'Contact',
+        'send' => 'Send',
+    );
+    ?> <select name='sticky_phone_button_settings[sticky_phone_button_alt_icon_name]'>
+        <?php foreach ($popular_icons as $icon_value => $icon_label): ?>
+            <option value='<?php echo esc_attr($icon_value); ?>' <?php selected($icon_name, $icon_value); ?>><?php echo esc_html($icon_label); ?></option>
+        <?php endforeach; ?>
+    </select>
+    <p class="description"><?php esc_html_e('Icon for the alternate button.', 'sticky-phone-button'); ?></p> <?php
+}
+
+/**
  * Enqueue Material Symbols
  */
 function sticky_phone_button_enqueue_material_symbols()
@@ -1671,6 +1880,53 @@ function sticky_phone_button_sanitize_settings($settings)
         $settings['sticky_phone_button_enable_debug'] = 1; // Checkbox value
     } else {
         $settings['sticky_phone_button_enable_debug'] = 0;
+    }
+
+    // Sanitize alternate profile (only when keys present; do not remove main profile keys)
+    if (isset($settings['sticky_phone_button_alt_enabled'])) {
+        $settings['sticky_phone_button_alt_enabled'] = 1;
+    } else {
+        $settings['sticky_phone_button_alt_enabled'] = 0;
+    }
+
+    if (isset($settings['sticky_phone_button_alt_link_type'])) {
+        $allowed_link_types = array('tel', 'mailto', 'url', 'sms');
+        $settings['sticky_phone_button_alt_link_type'] = in_array($settings['sticky_phone_button_alt_link_type'], $allowed_link_types, true)
+            ? $settings['sticky_phone_button_alt_link_type'] : 'mailto';
+    }
+
+    if (isset($settings['sticky_phone_button_alt_target'])) {
+        $allowed_targets = array('_self', '_blank', '_parent', '_top');
+        $settings['sticky_phone_button_alt_target'] = in_array($settings['sticky_phone_button_alt_target'], $allowed_targets, true)
+            ? $settings['sticky_phone_button_alt_target'] : '_self';
+    }
+
+    if (isset($settings['sticky_phone_button_alt_link_value'])) {
+        $settings['sticky_phone_button_alt_link_value'] = sanitize_text_field($settings['sticky_phone_button_alt_link_value']);
+    }
+
+    if (isset($settings['sticky_phone_button_alt_cta_text'])) {
+        $allowed_html = array('b' => array(), 'strong' => array(), 'br' => array(), 'small' => array(), 'em' => array(), 'i' => array());
+        $settings['sticky_phone_button_alt_cta_text'] = wp_kses(stripslashes($settings['sticky_phone_button_alt_cta_text']), $allowed_html);
+    }
+
+    if (isset($settings['sticky_phone_button_alt_icon_name'])) {
+        $settings['sticky_phone_button_alt_icon_name'] = sanitize_text_field($settings['sticky_phone_button_alt_icon_name']);
+    }
+
+    if (isset($settings['alt_display_days']) && is_array($settings['alt_display_days'])) {
+        $allowed_days = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+        $sanitized_alt_days = array();
+        foreach ($settings['alt_display_days'] as $day => $data) {
+            if (!in_array($day, $allowed_days, true) || !is_array($data)) {
+                continue;
+            }
+            $sanitized_alt_days[$day] = array(
+                'enabled' => !empty($data['enabled']) ? 1 : 0,
+                'hours' => isset($data['hours']) ? sanitize_text_field($data['hours']) : '',
+            );
+        }
+        $settings['alt_display_days'] = $sanitized_alt_days;
     }
 
     // Wymuś odświeżenie cache'u opcji
