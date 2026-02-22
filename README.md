@@ -49,6 +49,7 @@ Drive sales and customer engagement:
   - [Basic Setup](#basic-setup)
   - [Advanced Options](#advanced-options)
   - [URL Filtering Examples](#url-filtering-examples)
+  - [Scroll Trigger Examples](#scroll-trigger-examples)
   - [Border & Shadow Examples](#border--shadow-examples)
   - [CTA Text Formatting Examples](#cta-text-formatting-examples)
 - [Testing](#testing)
@@ -89,6 +90,10 @@ Drive sales and customer engagement:
   - **Hide on URLs containing** (blacklist): Hide button on pages with specific URL fragments
   - Exclude rules have priority over include rules
   - Debug mode support (ignores URL rules when `?debug=1`, `?forceCTA=1`, or `?show=1` is used)
+- **Scroll Trigger**: Show the button only after the user scrolls past a defined threshold
+  - Supports percentage (%) of page height or absolute pixels (px)
+  - Button hides again when scrolling back above the threshold
+  - Value `0` disables the trigger (button visible immediately)
 - **Visibility Rules**: Show or hide the button based on various conditions
 
 ### Flexible Action Configuration
@@ -168,6 +173,7 @@ Drive sales and customer engagement:
 
 ### Advanced Options
 - **URL Filtering**: Configure whitelist/blacklist rules for specific pages
+- **Scroll Trigger**: Set a scroll threshold (% or px) before the button appears
 - **Border Customization**: Set border radius, width, style, and color
 - **Shadow Effects**: Control shadow position, blur, spread, color, and inset options
 - **Custom CSS**: Add custom CSS classes or IDs for additional styling
@@ -186,6 +192,21 @@ Hide on URLs containing (blacklist):
 contact
 /admin/
 checkout
+```
+
+### Scroll Trigger Examples
+```
+Show after scroll (value + unit):
+0 %   - disabled, button visible immediately (default)
+25 %  - show after scrolling 25% of page height
+50 %  - show after scrolling halfway down the page
+75 %  - show near the bottom of the page
+100 % - show only when fully scrolled to the bottom
+
+300 px - show after scrolling 300px from the top
+500 px - show after scrolling 500px from the top
+
+Note: the button hides again when scrolling back above the threshold.
 ```
 
 ### Border & Shadow Examples
@@ -356,7 +377,14 @@ The button is rendered with the following HTML structure:
 
 ## Version History
 
-### 1.5 (Current)
+### 1.6 (Current)
+- **Scroll Trigger**: Show the button only after the user scrolls past a defined threshold (% or px)
+  - Supports percentage of page height or absolute pixel offset
+  - Button hides again when scrolling back above the threshold
+  - Throttled scroll listener (100ms) for optimal performance
+  - Value `0` disables the feature (backward compatible)
+
+### 1.5
 - **Stable Release**: All features from version 1.4 tested and verified
 - **Documentation Update**: Enhanced documentation with visual previews
 - **Performance Optimization**: Improved CSS generation and caching
